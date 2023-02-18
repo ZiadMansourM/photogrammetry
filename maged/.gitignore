@@ -1,0 +1,7 @@
+# folders of the project
+Images
+keyPoints
+matches
+
+# jupyter folder
+.ipynb_checkpoints
