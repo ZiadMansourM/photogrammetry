@@ -1,7 +1,10 @@
 # folders of the project
-Images
+Images*
 keyPoints
 matches
 
 # jupyter folder
 .ipynb_checkpoints
+
+# python folder
+__pycache__
