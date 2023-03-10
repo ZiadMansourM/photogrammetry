@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    environment:
+      - APP_ENV=production
+    volumes:
+      - ./volumes/app:/app
+    ports:
+      - 8000:8000
+
+  nginx:
+    image: nginx:1.21.3-alpine
+    volumes:
+      - ./volumes/nginx.conf:/etc/nginx/nginx.conf
+      - ./volumes/certs:/etc/letsencrypt
+      - ./volumes/logs:/var/log/nginx
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - app
+
+  certbot:
+    image: certbot/certbot
+    command: certonly --webroot --webroot-path=/var/www/html --email ziadmansour.4.9.2000@gmail.com --agree-tos --no-eff-email --staging -d photogrammetry.sreboy.com
+    volumes:
+      - ./volumes/certs:/etc/letsencrypt
+      - ./volumes/logs:/var/log/letsencrypt
+      - ./volumes/html:/var/www/html

@@ -1,2 +1,6 @@
-.DS_Store
-.vscode
+**/.DS_Store
+**/.vscode
+**/**.obj
+**/**.jpg
+**/venv
+**/**.log
