@@ -2,5 +2,5 @@
 **/.vscode
 **/**.obj
 **/**.jpg
-**/venv
+**/**venv
 **/**.log
