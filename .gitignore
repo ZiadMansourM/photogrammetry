@@ -4,3 +4,8 @@
 **/**.jpg
 **/**venv
 **/**.log
+**/**.pkl
+**/**.pickle
+!bak/**..pickle
+!bak/**..pkl
+**/__pycache__

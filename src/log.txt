@@ -1,0 +1,25 @@
+Function 'load_sift_features' took 4.873489141464233 seconds to execute.
+Function 'load_image_matching' took 0.002798795700073242 seconds to execute.
+Function 'get_matches_ids' took 6.374093055725098 seconds to execute.
+Function 'load_feature_matching' took 10.485340118408203 seconds to execute.
+Function 'davinci_run' took 31.082774877548218 seconds to execute.
+------------------------------------------------------------------------------------------------------------------------Function 'read_images_rbg' took 0.06475591659545898 seconds to execute.
+Function 'read_images' took 8.510336637496948 seconds to execute.
+Function 'rgp_to_gray' took 0.2604849338531494 seconds to execute.
+Function 'load_sift_features' took 5.092546701431274 seconds to execute.
+Function 'load_image_matching' took 0.002653837203979492 seconds to execute.
+Function 'get_matches_ids' took 6.237292051315308 seconds to execute.
+Function 'load_feature_matching' took 10.489835023880005 seconds to execute.
+Function 'davinci_run' took 31.1999409198761 seconds to execute.
+------------------------------------------------------------------------------------------------------------------------Function 'read_images_rbg' took 0.06475591659545898 seconds to execute.Function 'read_images' took 9.441406965255737 seconds to execute.
+Function 'rgp_to_gray' took 2.074506998062134 seconds to execute.
+Function 'load_sift_features' took 4.244958877563477 seconds to execute.
+Function 'load_image_matching' took 0.0036170482635498047 seconds to execute.
+Function 'get_matches_ids' took 6.118803977966309 seconds to execute.
+Function 'load_feature_matching' took 9.845837831497192 seconds to execute.
+Function 'read_images' took 8.488708972930908 seconds to execute.
+Function 'rgp_to_gray' took 0.25773096084594727 seconds to execute.
+Function 'load_sift_features' took 5.149397850036621 seconds to execute.
+Function 'load_image_matching' took 0.002599000930786133 seconds to execute.
+Function 'get_matches_ids' took 6.502438068389893 seconds to execute.
+Function 'load_feature_matching' took 10.282861232757568 seconds to execute.
