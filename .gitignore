@@ -6,6 +6,8 @@
 **/**.log
 **/**.pkl
 **/**.pickle
-!bak/**..pickle
-!bak/**..pkl
+**/**.pickle.bak
+**/**.pkl.bak
+!bak/**.pickle
+!bak/**.pkl
 **/__pycache__
