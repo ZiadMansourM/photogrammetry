@@ -13,8 +13,9 @@ from scipy.cluster.vq import kmeans, vq
 from scipy.spatial import Delaunay
 
 
-import utils
+import exceptions
 import calibration
+import utils
 
 logging.basicConfig(
     filename='tune.log', 
@@ -317,7 +318,7 @@ def davinci_run(image_set_name):
     print("Images loaded successfully")
     gray_images = utils.rgp_to_gray(images)
     print("Gray Images created successfully")
-    
+
     # 2. Feature Extraction: SIFT
     sift = OpenCV.SIFT_create()
     if os.path.isfile(f"bak/{image_set_name}/sift-features.pkl"):
@@ -349,16 +350,19 @@ def davinci_run(image_set_name):
         logging.info('----> Processing {image_set_name}...')
         feature_matches = data_feature_matching(matches_ids, descriptors)
         dump_feature_matching(f"bak/{image_set_name}/feature-matching-output.pkl", feature_matches)
-    
+
     # 5. Camera Calibration
     print("Camera Calibration starts ....")
-    K_matrix = calibration.calibrate_camera(f"bak/{image_set_name}/calibration.pkl")
+    if not os.path.isfile("bak/checker/K_matrix.pickle"):
+        raise exceptions.IntrinsicParametersNotFoundError("Intrinsic parameters not found")
+    with open('bak/checker/K_matrix.pickle', 'rb') as f:
+        K_matrix = pickle.load(f)
     
     # 6. Triangulation (3D reconstruction)
     print("Triangulation starts ....")
     points_cloud = generate_point_cloud(feature_matches, K_matrix)
     np.savetxt("points_cloud.txt", points_cloud)
-    
+
     # 7. generate mesh
     print("Generate mesh ....")
     tri = Delaunay(points_cloud)
