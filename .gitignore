@@ -11,3 +11,5 @@
 !bak/**.pickle
 !bak/**.pkl
 **/__pycache__
+**/points_cloud.txt
+**/output/
