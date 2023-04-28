@@ -9,26 +9,26 @@ import SwiftUI
 
 struct onBoardingView: View {
     
+    @Environment(\.colorScheme) private var colorScheme
+    
     @State private var rotationAngle = 0.0
     @State private var isAnimating = false
+    
+    private var isLightMode: Bool {
+        colorScheme == .light
+    }
     
     var body: some View {
         NavigationView {
             GeometryReader { geo in
                 VStack {
                     Spacer()
-                    Image("icon")
-                        .resizable()
-                        .scaledToFit()
+                    LogoView()
                         .frame(width: geo.size.width*0.4)
                         .frame(width: geo.size.width)
                         .rotation3DEffect(.degrees(rotationAngle), axis: (x: 1 , y: 0, z: 1))
                         .opacity(isAnimating ? 1:0)
                         .animation(.easeInOut(duration: 3), value: isAnimating)
-                        .onAppear(perform: {
-                            isAnimating = true
-                            logoRotation()
-                        })
             
                     VStack {
                         
@@ -39,7 +39,7 @@ struct onBoardingView: View {
 
                         Text("Transform 2D images into 3D models.")
                             .font(.headline)
-                            .foregroundColor(.black.opacity(0.65))
+                            .foregroundColor(isLightMode ? .black.opacity(0.65) : .white.opacity(0.65))
                             .fontWeight(.light)
                     }
                     .opacity(isAnimating ? 1 : 0)
@@ -66,8 +66,8 @@ struct onBoardingView: View {
                                 }
                                 .padding()
                             }
-                            .foregroundColor(.white)
-                            .background(.black.opacity(0.9))
+                            .foregroundColor(isLightMode ? .white: .black)
+                            .background(isLightMode ? .black.opacity(0.9): .white.opacity(0.98))
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                             .frame(width: geo.size.width*0.75)
                         }
@@ -99,12 +99,16 @@ struct onBoardingView: View {
                             Text("Skip")
                             Image(systemName: "arrow.right")
                         }
-                        .foregroundColor(.black.opacity(0.4))
+                        .foregroundColor(isLightMode ? .black.opacity(0.4): .white.opacity(0.7))
                     }
                     .scaleEffect(isAnimating ? 1 : 0)
                     .offset(y: isAnimating ? 0 : 40)
                     .animation(.easeOut(duration: 2), value: isAnimating)
                 }
+            }
+            .onAppear(){
+                isAnimating = true
+                logoRotation()
             }
         }
     }
@@ -119,5 +123,9 @@ struct onBoardingView: View {
 struct onBoardingView_Previews: PreviewProvider {
     static var previews: some View {
         onBoardingView()
+            .previewDisplayName("Light")
+        onBoardingView()
+            .preferredColorScheme(.dark)
+            .previewDisplayName("Dark")
     }
 }
