@@ -12,6 +12,7 @@
 		AE7AF15D29F9A7BF00079337 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15C29F9A7BF00079337 /* Assets.xcassets */; };
 		AE7AF16029F9A7BF00079337 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */; };
 		AE7F81AF29FA465C005073C8 /* onBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7F81AE29FA465C005073C8 /* onBoardingView.swift */; };
+		AED440B329FB846D0083FDC1 /* Color-Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED440B229FB846D0083FDC1 /* Color-Theme.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE7F81AD29FA424B005073C8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		AE7F81AE29FA465C005073C8 /* onBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onBoardingView.swift; sourceTree = "<group>"; };
+		AED440B229FB846D0083FDC1 /* Color-Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color-Theme.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			children = (
 				AE7F81AD29FA424B005073C8 /* Info.plist */,
 				AE7AF15829F9A7BE00079337 /* TridifyApp.swift */,
+				AED440B229FB846D0083FDC1 /* Color-Theme.swift */,
 				AE7F81AE29FA465C005073C8 /* onBoardingView.swift */,
 				AE7AF15A29F9A7BE00079337 /* ContentView.swift */,
 				AE7AF15C29F9A7BF00079337 /* Assets.xcassets */,
@@ -145,6 +148,7 @@
 				AE7F81AF29FA465C005073C8 /* onBoardingView.swift in Sources */,
 				AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */,
 				AE7AF15929F9A7BE00079337 /* TridifyApp.swift in Sources */,
+				AED440B329FB846D0083FDC1 /* Color-Theme.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
