@@ -14,4 +14,12 @@ extension ShapeStyle where Self == Color {
     static var lightHeadline: Color {
         .black.opacity(0.65)
     }
+    
+    static var darkButton: Color {
+        .white.opacity(0.98)
+    }
+    
+    static var lightButton: Color {
+        black.opacity(0.9)
+    }
 }

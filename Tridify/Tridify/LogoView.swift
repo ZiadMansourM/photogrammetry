@@ -8,18 +8,17 @@
 import SwiftUI
 
 struct LogoView: View {
+    
     @Environment(\.colorScheme) private var colorScheme
+    
+    private var isLightMode: Bool {
+        colorScheme == .light
+    }
+    
     var body: some View {
-        if colorScheme == .light {
-            Image("icon-light")
-                .resizable()
-                .scaledToFit()
-        }
-        else {
-            Image("icon-dark")
-                .resizable()
-                .scaledToFit()
-        }
+        Image(isLightMode ? "icon-light" : "icon-dark")
+            .resizable()
+            .scaledToFit()
     }
 }
 

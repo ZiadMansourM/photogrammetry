@@ -48,41 +48,14 @@ struct onBoardingView: View {
                     Spacer()
                     
                     VStack {
-                        NavigationLink {
-                            // go to the sign page
-                            Text("Create an account")
-                        } label: {
-                            HStack {
-                                HStack {
-                                    Spacer()
-                                    Text ("Create Tridify Account")
-                                        .font(.title2)
-                                        .fontWeight(.medium)
-                                
-                                    Spacer()
-                                    
-                                    Image(systemName: "arrowtriangle.forward.fill")
-                                    Spacer()
-                                }
-                                .padding()
-                            }
-                            .foregroundColor(isLightMode ? .white: .black)
-                            .background(isLightMode ? .black.opacity(0.9): .white.opacity(0.98))
-                            .clipShape(RoundedRectangle(cornerRadius: 20))
-                            .frame(width: geo.size.width*0.75)
-                        }
+                        ButtonOneView(buttonText: "Create Tridify Account", systemName: "arrowtriangle.forward.fill", targetView: {
+                            Text ("Create an account")
+                        })
+                        .frame(width: geo.size.width * 0.75)
                         
-                        HStack {
-                            Text ("Already have an account ?")
-                            NavigationLink {
-                                Text("Login page")
-                            } label: {
-                                Text("Log In")
-                                    .foregroundColor(.blue)
-                            }
-                        }
-                        .font(.headline)
-                        .fontWeight(.regular)
+                        AccountStatusView(questionText: "Already have an account?", navigationText: "Log in", targetView: {
+                            LoginView()
+                        })
                         .padding(.vertical)
                     }
                     .opacity(isAnimating ? 1 : 0)
