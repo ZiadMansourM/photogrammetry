@@ -39,7 +39,7 @@ struct onBoardingView: View {
 
                         Text("Transform 2D images into 3D models.")
                             .font(.headline)
-                            .foregroundColor(isLightMode ? .black.opacity(0.65) : .white.opacity(0.65))
+                            .foregroundColor(isLightMode ? .lightHeadline : .darkHeadline)
                             .fontWeight(.light)
                     }
                     .opacity(isAnimating ? 1 : 0)
