@@ -17,6 +17,7 @@
 **/**.ply
 **/**.STL
 **/**.obj
+**/**-local
 
 
 # Xcode
