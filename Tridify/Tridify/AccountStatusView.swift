@@ -20,7 +20,7 @@ struct AccountStatusView<TargetView: View>: View {
                 targetView()
             } label: {
                 Text(navigationText)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.link)
             }
         }
         .font(.headline)

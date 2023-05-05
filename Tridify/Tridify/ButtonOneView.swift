@@ -12,7 +12,7 @@ struct ButtonOneView<TargetView : View>: View {
     @Environment(\.colorScheme) private var colorScheme
     
     private let buttonText: String
-    private let systemName: String
+    private let systemName: String?
     private let targetView: () -> TargetView
 
     private var isLightMode:Bool {
@@ -29,10 +29,10 @@ struct ButtonOneView<TargetView : View>: View {
                     Text (buttonText)
                         .font(.title2)
                         .fontWeight(.medium)
-                    
-                    Spacer()
-                    
-                    Image(systemName: systemName)
+                    if systemName != nil {
+                        Spacer()
+                        Image(systemName: systemName ?? "arrow")
+                    }
                     Spacer()
                 }
                 .padding()
@@ -44,7 +44,7 @@ struct ButtonOneView<TargetView : View>: View {
         }
     }
     
-    init (buttonText: String, systemName: String, targetView: @escaping () -> TargetView){
+    init (buttonText: String, systemName: String?, targetView: @escaping () -> TargetView){
         self.buttonText = buttonText
         self.systemName = systemName
         self.targetView = targetView
@@ -55,7 +55,7 @@ struct ButtonOneView<TargetView : View>: View {
 struct ButtonOneView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            ButtonOneView<Text>(buttonText: "Create your account", systemName: "arrowtriangle.forward.fill", targetView: {
+            ButtonOneView<Text>(buttonText: "Create your account", systemName: nil, targetView: {
                 Text("Hello")
             })
         }

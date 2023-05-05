@@ -22,4 +22,8 @@ extension ShapeStyle where Self == Color {
     static var lightButton: Color {
         black.opacity(0.9)
     }
+    
+    static var link: Color {
+        .blue
+    }
 }
