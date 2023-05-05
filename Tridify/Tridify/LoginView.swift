@@ -15,7 +15,8 @@ struct LoginView: View {
     }
     
     @State private var email = ""
-    private var password = ""
+    @State private var password = ""
+    @State private var showPassword = false
     
     var body: some View {
         GeometryReader { geo in
@@ -23,7 +24,6 @@ struct LoginView: View {
                 LogoView()
                     .frame(width: geo.size.width*0.275)
                     .frame(width: geo.size.width)
-                    .padding(.top, geo.size.height/10)
                 Text ("LOGIN")
                     .font(.title)
                     .kerning(10)
@@ -58,16 +58,33 @@ struct LoginView: View {
 //                            .font(.title2)
                         Text("Password")
                             .font(.title2)
-                        TextField("Enter your password", text: $email)
-                            .padding(.horizontal, 20)
-                            .font(.title3)
-                            .overlay(content: {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke()
-                                    .frame(height: 35)
-                                    .foregroundColor(.gray)
+                        Group {
+                            if !showPassword {
+                                SecureField("Enter your password", text: $password)
+                            }
+                            else {
+                                TextField("Enter your password", text: $password)
+                            }
+                        }
+                        .padding(.horizontal, 20)
+                        .font(.title3)
+                        .overlay(content: {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke()
+                                .frame(height: 35)
+                                .foregroundColor(.gray)
                         
-                            })
+                        })
+                        .overlay(alignment: .trailing) {
+                            Button {
+                                showPassword.toggle()
+                            } label: {
+                                Image(systemName: showPassword ? "eye" : "eye.slash")
+                                    .foregroundColor(showPassword ? .link : .gray)
+                                    .padding(.horizontal, 6)
+                            }
+                        }
+                        
                         NavigationLink {
                             Text("Forgot password View")
                                 
@@ -107,6 +124,7 @@ struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             LoginView()
+            
         }
     }
 }
