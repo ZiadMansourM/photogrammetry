@@ -5,11 +5,10 @@ from typing import Final, Optional
 
 import cv2 as OpenCV
 import numpy as np
-import trimesh
+import open3d as o3d
 from numpy.linalg import norm
 from scipy.cluster.vq import kmeans, vq
 from scipy.spatial import Delaunay
-
 
 class CalibrationError(Exception):
     def __init__(self, message):
@@ -395,24 +394,8 @@ def generate_point_cloud(images: Images, K_matrix):
         point_cloud.append(pts_3d)
     return np.concatenate(point_cloud, axis=0)
 
-def write_obj_file(points, filename):
-    """
-    Writes a numpy array of points to an .obj file.
-
-    Parameters:
-    points (numpy.ndarray): Nx3 matrix containing the points to write.
-    filename (str): Name of the output file.
-
-    Returns:
-    None
-    """
-    with open(filename, 'w') as f:
-        for point in points:
-            f.write(f"v {point[0]} {point[1]} {point[2]}\n")
-
-def main():
+def main(image_set_name: str):
     print("Welcome ScanMate...")
-    image_set_name = "snow-man"
     images: Optional[Images] = None
     # Reload the last state
     last_state: str
@@ -426,7 +409,7 @@ def main():
         last_state = "SIFT Features Step"
     else:
         last_state = "Images Loading Step"
-
+    
     # 1. Load and prepare Images
     if last_state == "Images Loading Step":
         if os.path.isfile(f"bak/{image_set_name}/images.pkl"):
@@ -441,7 +424,7 @@ def main():
             dump_images_bak(f"bak/{image_set_name}/images.pkl", images)
         print("Images loaded successfully")
         last_state = "SIFT Features Step"
-
+    
     # 2. Feature Extraction: SIFT
     if last_state == "SIFT Features Step":
         if os.path.isfile(f"bak/{image_set_name}/sift-features.pkl"):
@@ -457,7 +440,7 @@ def main():
             dump_images_bak(f"bak/{image_set_name}/sift-features.pkl", images)
         print("Feature Extraction: SIFT DONE...")
         last_state = "Images Matching Step"
-    
+
     # 3. Image Matching
     if last_state == "Images Matching Step":
         if os.path.isfile(f"bak/{image_set_name}/images-matched.pkl"):
@@ -507,32 +490,14 @@ def main():
             with open(f"bak/{image_set_name}/point-cloud.pkl", 'wb') as f:
                 pickle.dump(points_cloud, f)
     
-    # Dummy Step
     print(f"points_cloud.shape: {points_cloud.shape}")
-    # Save the point cloud to a file
-    np.savetxt(f"output/{image_set_name}/point-cloud.txt", points_cloud)
-    write_obj_file(points_cloud, "output/{image_set_name}/output.obj")
 
-    # 7. generate mesh
-    print("Generate mesh ....")
-    if os.path.isfile(f"bak/{image_set_name}/mesh.pkl"):
-        with open(f"bak/{image_set_name}/mesh.pkl", 'rb') as f:
-            mesh = pickle.load(f)
-    else:
-        tri = Delaunay(points_cloud)
-        print("Done Delaunay ....")
-        mesh = trimesh.Trimesh(points_cloud, tri.simplices)
-        print("Done trimesh ....")
-        # mesh = mesh.simplify()
-        with open(f"bak/{image_set_name}/mesh.pkl", 'wb') as f:
-            pickle.dump(mesh, f)
-    
-    # 8. output .obj, .stl and .ply files
-    print("Generate mesh ....")
-    mesh.export(f"output/{image_set_name}/snow_man.obj")
-    mesh.export(f"output/{image_set_name}/snow_man.stl")
-    mesh.export(f"output/{image_set_name}/snow_man.ply")
-
+    # 7. Generate Mesh
+    print("Generating Mesh ....")
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points_cloud[:,:3])
+    # Save it as a.STL file
+    o3d.io.write_point_cloud("point_cloud.ply", pcd)
 
 if __name__ == "__main__":
-    main()
+    main("snow-man")
