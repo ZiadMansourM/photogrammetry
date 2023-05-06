@@ -13,6 +13,7 @@ struct onBoardingView: View {
     
     @State private var rotationAngle = 0.0
     @State private var isAnimating = false
+    @State private var oldIsAnimating = false
     
     private var isLightMode: Bool {
         colorScheme == .light
@@ -80,6 +81,7 @@ struct onBoardingView: View {
                 }
             }
             .onAppear(){
+                oldIsAnimating = isAnimating
                 isAnimating = true
                 logoRotation()
             }
@@ -87,8 +89,10 @@ struct onBoardingView: View {
     }
     
     func logoRotation() {
-        withAnimation(.easeInOut(duration: 2)){
-            rotationAngle += 360
+        if oldIsAnimating != isAnimating {
+            withAnimation(.easeInOut(duration: 2)){
+                rotationAngle += 360
+            }
         }
     }
 }

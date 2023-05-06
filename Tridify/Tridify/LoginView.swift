@@ -18,6 +18,8 @@ struct LoginView: View {
     @State private var password = ""
     @State private var showPassword = false
     
+    @State private var isAnimating = false
+    
     var body: some View {
         GeometryReader { geo in
             VStack {
@@ -38,10 +40,9 @@ struct LoginView: View {
                 VStack {
                     
                     VStack (alignment: .leading) {
-//                        Label("Email ", systemImage: "envelope.fill")
-//                            .font(.title2)
-                        Text("Email")
+                        Label("Email ", systemImage: "envelope.fill")
                             .font(.title2)
+
                         TextField("Enter your email address", text: $email)
                             .padding(.horizontal, 20)
                             .font(.title3)
@@ -54,10 +55,9 @@ struct LoginView: View {
                     }
                     
                     VStack(alignment: .leading) {
-//                        Label("Password ", systemImage: "lock.square")
-//                            .font(.title2)
-                        Text("Password")
+                        Label("Password ", systemImage: "lock.square")
                             .font(.title2)
+
                         Group {
                             if !showPassword {
                                 SecureField("Enter your password", text: $password)
