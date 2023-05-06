@@ -23,19 +23,24 @@ struct LoginView: View {
     var body: some View {
         GeometryReader { geo in
             VStack {
-                LogoView()
-                    .frame(width: geo.size.width*0.275)
-                    .frame(width: geo.size.width)
-                Text ("LOGIN")
-                    .font(.title)
-                    .kerning(10)
-                Text("Get started to save your models to the web and access them on any device.")
-                    .font(.headline)
-                    .foregroundColor(isLightMode ? .lightHeadline : .darkHeadline)
-                    .fontWeight(.light)
-                    .multilineTextAlignment(.center)
-                    .frame(width: geo.size.width * 0.75)
-                    .padding(.top, 0.1)
+                VStack {
+                    LogoView()
+                        .frame(width: geo.size.width*0.275)
+                        .frame(width: geo.size.width)
+                    Text ("LOGIN")
+                        .font(.title)
+                        .kerning(10)
+                    Text("Get started to save your models to the web and access them on any device.")
+                        .font(.headline)
+                        .foregroundColor(isLightMode ? .lightHeadline : .darkHeadline)
+                        .fontWeight(.light)
+                        .multilineTextAlignment(.center)
+                        .frame(width: geo.size.width * 0.75)
+                        .padding(.top, 0.1)
+                }
+                .scaleEffect(isAnimating ? 1:0)
+                .offset(y: isAnimating ? 0: -40)
+                .animation(.easeOut(duration: 2), value: isAnimating)
     
                 VStack {
                     
@@ -100,22 +105,32 @@ struct LoginView: View {
                     
                 }
                 .padding([.top, .horizontal], 15)
+                .offset(x:isAnimating ? 0: -100)
+                .animation(.interpolatingSpring(stiffness: 8, damping: 2), value: isAnimating)
                 
                 Spacer()
-                ButtonOneView(buttonText: "Login", systemName: nil, targetView: {
-                    Text("Main View")
-                })
-                .frame(width: geo.size.width * 0.7)
-                
-                AccountStatusView(questionText: "Dont have an account?", navigationText: "Sign Up", targetView: {
-                    Text("Sign up view")
-                })
-                .padding(.top, 3)
+                VStack {
+                    ButtonOneView(buttonText: "Login", systemName: nil, targetView: {
+                        Text("Main View")
+                    })
+                    .frame(width: geo.size.width * 0.7)
+                    
+                    AccountStatusView(questionText: "Dont have an account?", navigationText: "Sign Up", targetView: {
+                        Text("Sign up view")
+                    })
+                    .padding(.top, 3)
+                }
+                .scaleEffect(isAnimating ? 1:0)
+                .offset(y:isAnimating ? 0:40)
+                .animation(.easeOut(duration: 2), value: isAnimating)
                 
                 Spacer()
                 
                 
             }
+        }
+        .onAppear {
+            isAnimating = true
         }
     }
 }
