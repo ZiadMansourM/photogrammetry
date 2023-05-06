@@ -15,6 +15,8 @@ struct onBoardingView: View {
     @State private var isAnimating = false
     @State private var oldIsAnimating = false
     
+    @AppStorage("onBoarding") var onBoarding = true
+    
     private var isLightMode: Bool {
         colorScheme == .light
     }
@@ -65,9 +67,8 @@ struct onBoardingView: View {
                     
                     Spacer()
                     
-                    NavigationLink {
-                        // go to the main view
-                        Text("main view")
+                    Button {
+                        onBoarding = false
                     } label: {
                         HStack {
                             Text("Skip")
