@@ -1,9 +1,12 @@
 import pickle
 import numpy as np
+import time
 
 print("started exec")
 
-with open("bak/snow-man/point-cloud.pkl", 'rb') as f:
+start_time = time.time()
+
+with open("../../src/bak/snow-man/point-cloud.pkl", 'rb') as f:
     points_cloud: np.ndarray = pickle.load(f)
 
 print("started processing....")
@@ -31,3 +34,7 @@ outlier_points = points_cloud[outlier_indices, :]
 # Print the number of clusters and the number of outlier points
 print("Number of clusters:", len(np.unique(labels)) - 1)
 print("Number of outlier points:", len(outlier_indices))
+
+end_time = time.time()
+execution_time = end_time - start_time
+print("Execution time:", execution_time, "seconds")
