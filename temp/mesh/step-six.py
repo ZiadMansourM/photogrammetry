@@ -61,4 +61,4 @@ pcd.points = o3d.utility.Vector3dVector(point_cloud[:,:3])
 o3d.visualization.draw_geometries([pcd])
 
 # Save it as a.STL file
-# o3d.io.write_point_cloud("point_cloud.ply", pcd)
+o3d.io.write_point_cloud("point_cloud.ply", pcd)
