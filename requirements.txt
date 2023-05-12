@@ -16,6 +16,7 @@ dash-table==5.0.0
 debugpy==1.6.7
 decorator==5.1.1
 executing==1.2.0
+ExifRead==3.0.0
 fastjsonschema==2.16.3
 Flask==2.3.1
 fonttools==4.39.3
