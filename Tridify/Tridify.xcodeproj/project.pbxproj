@@ -12,6 +12,7 @@
 		AE35492929FC63DC00456673 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE35492829FC63DC00456673 /* LoginView.swift */; };
 		AE35492B29FC6B6200456673 /* Color-Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE35492A29FC6B6200456673 /* Color-Theme.swift */; };
 		AE44258D2A061FFA00ADD324 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE44258C2A061FFA00ADD324 /* HomeView.swift */; };
+		AE51B7F42A0A84C3001C7393 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE51B7F32A0A84C3001C7393 /* CameraView.swift */; };
 		AE7AF15929F9A7BE00079337 /* TridifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7AF15829F9A7BE00079337 /* TridifyApp.swift */; };
 		AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7AF15A29F9A7BE00079337 /* ContentView.swift */; };
 		AE7AF15D29F9A7BF00079337 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15C29F9A7BF00079337 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 		AE35492829FC63DC00456673 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		AE35492A29FC6B6200456673 /* Color-Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color-Theme.swift"; sourceTree = "<group>"; };
 		AE44258C2A061FFA00ADD324 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		AE51B7F32A0A84C3001C7393 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		AE7AF15529F9A7BE00079337 /* Tridify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tridify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE7AF15829F9A7BE00079337 /* TridifyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TridifyApp.swift; sourceTree = "<group>"; };
 		AE7AF15A29F9A7BE00079337 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -68,14 +70,9 @@
 			children = (
 				AE7F81AD29FA424B005073C8 /* Info.plist */,
 				AE7AF15829F9A7BE00079337 /* TridifyApp.swift */,
-				AE7AF15A29F9A7BE00079337 /* ContentView.swift */,
-				AE44258C2A061FFA00ADD324 /* HomeView.swift */,
-				AE35492A29FC6B6200456673 /* Color-Theme.swift */,
-				AE7F81AE29FA465C005073C8 /* onBoardingView.swift */,
-				AE18AB3F29FF071D00D547A0 /* AccountStatusView.swift */,
-				AE35492829FC63DC00456673 /* LoginView.swift */,
-				AE18AB3D29FEDBD600D547A0 /* ButtonOneView.swift */,
-				AED440B429FB94510083FDC1 /* LogoView.swift */,
+				AEEC4D0D2A110CC5009F1F09 /* Screens */,
+				AEEC4D0E2A110D32009F1F09 /* UtilitiesViews */,
+				AEEC4D0F2A110D76009F1F09 /* Utilities */,
 				AE7AF15C29F9A7BF00079337 /* Assets.xcassets */,
 				AE7AF15E29F9A7BF00079337 /* Preview Content */,
 			);
@@ -88,6 +85,36 @@
 				AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AEEC4D0D2A110CC5009F1F09 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				AE7AF15A29F9A7BE00079337 /* ContentView.swift */,
+				AE51B7F32A0A84C3001C7393 /* CameraView.swift */,
+				AE44258C2A061FFA00ADD324 /* HomeView.swift */,
+				AE7F81AE29FA465C005073C8 /* onBoardingView.swift */,
+				AE35492829FC63DC00456673 /* LoginView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		AEEC4D0E2A110D32009F1F09 /* UtilitiesViews */ = {
+			isa = PBXGroup;
+			children = (
+				AE18AB3F29FF071D00D547A0 /* AccountStatusView.swift */,
+				AE18AB3D29FEDBD600D547A0 /* ButtonOneView.swift */,
+				AED440B429FB94510083FDC1 /* LogoView.swift */,
+			);
+			path = UtilitiesViews;
+			sourceTree = "<group>";
+		};
+		AEEC4D0F2A110D76009F1F09 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				AE35492A29FC6B6200456673 /* Color-Theme.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -163,6 +190,7 @@
 				AE44258D2A061FFA00ADD324 /* HomeView.swift in Sources */,
 				AED440B529FB94510083FDC1 /* LogoView.swift in Sources */,
 				AE18AB3E29FEDBD600D547A0 /* ButtonOneView.swift in Sources */,
+				AE51B7F42A0A84C3001C7393 /* CameraView.swift in Sources */,
 				AE35492B29FC6B6200456673 /* Color-Theme.swift in Sources */,
 				AE7F81AF29FA465C005073C8 /* onBoardingView.swift in Sources */,
 				AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */,
