@@ -18,7 +18,7 @@ struct HomeView: View {
                     Image(systemName: "scale.3d")
                     Text("Captures")
                 }
-            CameraView()
+            Text("Second View")
                 .tabItem {
                     Image(systemName: "camera.fill")
                     Text("Camera")
