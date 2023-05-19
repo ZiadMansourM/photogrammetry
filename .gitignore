@@ -21,7 +21,8 @@
 
 **/images/
 **/bak/
-
+**/logs/
+**/output/
 !README.md
 **.md
 
