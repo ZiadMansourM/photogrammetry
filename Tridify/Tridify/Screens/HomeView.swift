@@ -10,22 +10,31 @@ import SwiftUI
 struct HomeView: View {
     
     @AppStorage("onBoarding") var onBoarding = false
+    @State private var cameraViewOn = true
     
     var body: some View {
-        TabView {
-            Text("First View")
-                .tabItem {
-                    Image(systemName: "scale.3d")
-                    Text("Captures")
+        GeometryReader { geo in
+            if cameraViewOn {
+                VStack(alignment: .trailing) {
+                    Button {
+                        cameraViewOn = false
+                    } label: {
+                        Image(systemName: "x.circle")
+                            .font(.system(size: 40))
+                            .fontWeight(.light)
+                            .padding(.trailing, 8)
+                            .padding(.top, 10)
+                            .foregroundColor(Color(white: 0.85))
+                    }
+                    CustomCameraView()
                 }
-            Text("Second View")
-                .tabItem {
-                    Image(systemName: "camera.fill")
-                    Text("Camera")
-                }
-            
+                .transition(.move(edge: .leading))
+                .animation(.easeIn, value: cameraViewOn)
+            }
+            else {
+                GalleryView()
+            }
         }
-
     }
 }
 

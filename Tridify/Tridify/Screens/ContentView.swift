@@ -11,6 +11,7 @@ struct ContentView: View {
     
     @AppStorage("onBoarding") var onBoarding = true
     
+    
     var body: some View {
         if onBoarding {
             onBoardingView()

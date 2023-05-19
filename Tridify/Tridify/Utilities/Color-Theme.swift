@@ -26,4 +26,8 @@ extension ShapeStyle where Self == Color {
     static var link: Color {
         .blue
     }
+    
+    static var emptyImage: Color {
+        Color(red: 0.45, green: 0.45, blue: 0.45).opacity(0.4)
+    }
 }

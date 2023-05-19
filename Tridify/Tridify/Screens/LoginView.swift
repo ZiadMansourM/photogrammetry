@@ -105,8 +105,6 @@ struct LoginView: View {
                     
                 }
                 .padding([.top, .horizontal], 15)
-                .offset(x:isAnimating ? 0: -100)
-                .animation(.interpolatingSpring(stiffness: 8, damping: 2), value: isAnimating)
                 
                 Spacer()
                 VStack {
@@ -120,9 +118,6 @@ struct LoginView: View {
                     })
                     .padding(.top, 3)
                 }
-                .scaleEffect(isAnimating ? 1:0)
-                .offset(y:isAnimating ? 0:40)
-                .animation(.easeOut(duration: 2), value: isAnimating)
                 
                 Spacer()
                 

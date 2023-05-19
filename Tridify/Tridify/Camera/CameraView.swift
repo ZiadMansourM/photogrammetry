@@ -13,6 +13,7 @@ struct CameraView: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
     
     let cameraService: CameraService
+    
     let didFinishProcessingPhoto: (Result<AVCapturePhoto, Error>) -> ()
     
     func makeUIViewController(context: Context) -> UIViewController {
@@ -27,7 +28,8 @@ struct CameraView: UIViewControllerRepresentable {
         let viewController = UIViewController()
         viewController.view.backgroundColor = .black
         viewController.view.layer.addSublayer(cameraService.previewLayer)
-        cameraService.previewLayer.frame = viewController.view.bounds
+        cameraService.previewLayer.frame = CGRect(x:0, y:30, width:viewController.view.bounds.width, height:viewController.view.bounds.height * 0.65)
+
         
         return viewController
     }

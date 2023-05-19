@@ -12,13 +12,12 @@ class CameraService {
     
     var session: AVCaptureSession?
     var delegate: AVCapturePhotoCaptureDelegate?
-    
     let output = AVCapturePhotoOutput()
     let previewLayer = AVCaptureVideoPreviewLayer()
     
     func start(delegate: AVCapturePhotoCaptureDelegate, completion: @escaping (Error?) -> ()){
         self.delegate = delegate
-        
+        checkPermission(completion: completion)
     }
     
     private func checkPermission(completion: @escaping (Error?) -> ()){
@@ -56,7 +55,9 @@ class CameraService {
                 
                 previewLayer.videoGravity = .resizeAspectFill
                 previewLayer.session = session
-                session.startRunning()
+                DispatchQueue.global().async {
+                    session.startRunning()
+                }
                 self.session = session
             } catch {
                 completion(error)
@@ -64,7 +65,7 @@ class CameraService {
         }
     }
     
-    func capturePhotos(with settings: AVCapturePhotoSettings = AVCapturePhotoSettings()){
+    func capturePhotos(with settings: AVCapturePhotoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])){
         output.capturePhoto(with: settings, delegate: delegate!)
     }
 }
