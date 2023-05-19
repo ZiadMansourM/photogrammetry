@@ -3,7 +3,7 @@
 **/**.obj
 **/**.jpg
 **/**venv
-**/**.log
+# **/**.log
 **/**.pkl
 **/**.pickle
 **/**.pickle.bak
@@ -12,12 +12,18 @@
 !bak/**.pkl
 **/__pycache__
 **/points_cloud.txt
-**/output/
+# **/output/
 
 **/**.ply
 **/**.STL
 **/**.obj
 **/**-local
+
+**/images/
+**/bak/
+
+!README.md
+**.md
 
 
 # Xcode

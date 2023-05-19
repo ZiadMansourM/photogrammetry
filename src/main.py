@@ -1,14 +1,52 @@
+import gc
 import os
 import pickle
+import sys
+import time
 import uuid
 from typing import Final, Optional
 
 import cv2 as OpenCV
 import numpy as np
-import open3d as o3d
+from matplotlib import pyplot as plt
 from numpy.linalg import norm
 from scipy.cluster.vq import kmeans, vq
 from scipy.spatial import Delaunay
+
+
+def log_to_file(file_name: str, message: str):
+    import datetime
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_message = f"[{timestamp}] {message}"
+    with open(file_name, "a") as f:
+        f.write(f"{log_message}\n")
+
+
+def print_size(file_name: str, obj, obj_name="N/A"):
+    from pympler import asizeof
+    memory_usage = asizeof.asizeof(obj)
+    # Convert memory usage to a more readable format
+    if memory_usage < 1024:
+        memory_usage_str = f"{memory_usage} bytes"
+    elif memory_usage < 1024 ** 2:
+        memory_usage_str = f"{memory_usage / 1024} KB"
+    elif memory_usage < 1024 ** 3:
+        memory_usage_str = f"{memory_usage / (1024 ** 2)} MB"
+    else:
+        memory_usage_str = f"{memory_usage / (1024 ** 3)} GB"
+    # Print the memory usage and object name
+    log_to_file(file_name, f"Memory usage of {obj_name}: {memory_usage_str}")
+
+def timeit(func):
+    def wrapper(*args, **kwargs):
+        img_set_name = kwargs['img_set_name']
+        log_to_file(f"data/{img_set_name}/logs/tune.log", f"Started {func.__name__}...")
+        start_time = time.time()
+        result = func(*args, **kwargs)
+        end_time = time.time()
+        log_to_file(f"data/{img_set_name}/logs/tune.log", f"Done {func.__name__} took {end_time - start_time:,} seconds to execute.")
+        return result
+    return wrapper
 
 class CalibrationError(Exception):
     def __init__(self, message):
@@ -32,6 +70,38 @@ class Image:
     @property
     def length(self):
         return f"{len(self.keypoints)}" if len(self.keypoints) == len(self.descriptors) else f"{len(self.keypoints)}, {len(self.descriptors)}"
+    
+    def draw_sift_features(self):
+        image_with_sift = OpenCV.drawKeypoints(self.rgb_image, self.keypoints, None, flags=OpenCV.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+        plt.imshow(image_with_sift)
+        plt.title("Image with SIFT Features")
+        plt.axis('off')
+        plt.show()
+
+    def display_rgb_image(self, title: Optional[str] = None):
+        image = self.rgb_image
+        plt.imshow(image)
+        if title is not None:
+            plt.title(title)
+        plt.axis('off')
+        plt.show()
+
+    def display_gray_image(self, title: Optional[str] = None):
+        image = self.gray_image
+        plt.gray()
+        plt.imshow(image)
+        if title is not None:
+            plt.title(title)
+        plt.axes('off')
+        plt.show()
+
+    def display_similar_images(self):
+        print(f"Ref image: Img({self.img_id}, {self.path})")
+        self.display_rgb_image()
+        print("-----------------------------------------------------")
+        for sim_img, perc in self.similar_images:
+            print(f"[{sim_img.img_id}, {sim_img.path}], image percentage {perc}, {sim_img.path}")
+            sim_img.display_rgb_image()
     
     def __repr__(self):
         return f"Image({self.img_id})"
@@ -60,6 +130,26 @@ class FeatureMatches:
         self.image_two: Image = image_two
         self.matches: list[OpenCV.DMatch] = matches
 
+    def draw_matches(self, output_filename: str) -> None:
+        combined_image = OpenCV.hconcat([
+            self.image_one.rgb_image,
+            self.image_two.rgb_image
+        ])
+
+        for match in self.matches:
+            x1, y1 = self.image_one.keypoints[match.queryIdx].pt
+            x2, y2 = self.image_two.keypoints[match.trainIdx].pt
+            # Draw a line connecting the matched keypoints
+            OpenCV.line(
+                combined_image, 
+                (int(x1), int(y1)), 
+                (int(x2) + self.image_one.rgb_image.shape[1], int(y2)), 
+                (0, 255, 0), 
+                1
+            )
+
+        OpenCV.imwrite(output_filename, combined_image)
+
     def __repr__(self):
         return f"FeatureMatches({self.image_one}, {self.image_two} ---> {len(self.matches)})"
 
@@ -86,24 +176,25 @@ class Images:
     def __len__(self):
         return len(self.images)
 
-""" Step One: Read and Load Images
-Inputs: 
-- folder_path: str
 
-Outputs:
-- images: Images
+def dump_images_bak(images_file_path: str, images: Images) -> None:
+    """ Dump images to a file """
+    with open(images_file_path, "wb") as file:
+        pickle.dump(images, file)
 
-Main Functions:
-1. prepare_images: read and load images from a folder into an Images object
+def load_images_bak(images_file_path: str) -> Images:
+    """ Load images from a file """
+    with open(images_file_path, "rb") as file:
+        images = pickle.load(file)
+    return images
 
-Utils Functions:
-1. dump_images: dump images to a pickle file
-2. load_images: load images from a pickle file
-"""
-
-def prepare_images(folder_path: str) -> Images:
+"""Step One"""
+@timeit
+def prepare_images(**kwargs) -> Images:
     """ Read and load images """
-    images: Images = Images([], folder_path.split("/")[-1])
+    img_set_name = kwargs['img_set_name']
+    folder_path = f"data/{img_set_name}/images"
+    images: Images = Images([], folder_path.split("/")[-2])
     files: list[str] = filter(lambda file: ".jpg" in file, os.listdir(folder_path))
     for i, file in enumerate(files):
         image_path = f"{folder_path}/{file}"
@@ -112,32 +203,10 @@ def prepare_images(folder_path: str) -> Images:
         images.images.append(Image(i, rgb_image, gray_image, [], [], image_path))
     return images
 
-def dump_images_bak(images_file_path: str, images: Images) -> None:
-    """ Dump images to a file """
-    with open(images_file_path, "wb") as file:
-        prepare_images.dump(images, file)
 
-def load_images_bak(images_file_path: str) -> Images:
-    """ Load images from a file """
-    with open(images_file_path, "rb") as file:
-        images = pickle.load(file)
-    return images
-
-"""Step Two: Feature Extraction
-Inputs:
-- images: Images
-- SIFT: OpenCV.SIFT
-
-Outputs:
-- image: Image
---> image.keypoints: list[OpenCV.KeyPoint]
---> image.descriptors: np.ndarray
-
-Main Functions:
-1. compute_keypoints_descriptors
-"""
-
-def compute_keypoints_descriptors(images: list[Image], SIFT: OpenCV.SIFT) -> None:
+"""Step Two"""""
+@timeit
+def compute_keypoints_descriptors(images: list[Image], SIFT: OpenCV.SIFT, **kwargs) -> None:
     """Compute keypoints and descriptors for each image in the list of images using SIFT algorithm.
     Modifies each image in the list of images by adding its keypoints and descriptors as attributes.
     
@@ -148,54 +217,44 @@ def compute_keypoints_descriptors(images: list[Image], SIFT: OpenCV.SIFT) -> Non
     Returns:
     - None.
     """
+    img_set_name = kwargs['img_set_name']
     for img in images.images:
         keypoints: list[OpenCV.KeyPoint]
         descriptors: np.ndarray
         keypoints, descriptors = SIFT.detectAndCompute(img.gray_image, None)
         img.keypoints = keypoints
         img.descriptors = descriptors
+        log_to_file(f"data/{img_set_name}/logs/tune.log", f"Img({img.img_id}, {img.path}) has {len(img.keypoints)} keypoints and {len(img.descriptors)} descriptors.")
 
-""" Step Three: Image Matching
-Inputs:
-- descriptors: list[np.ndarray]
-
-Outputs:
-- centroids: np.ndarray
-- variance: np.ndarray
-- CLUSTER_COUNT: int
-- matches_ids: list[list[tuple[int, float]]]
-
-Main Functions:
-1. get_matches
-
-Utils Functions:
-1. get_matches_ids
-
-Sub Utils Functions:
-1. get_visual_words
-2. get_frequency_vectors
-3. get_tf_idf
-4. search_matches
-"""
-
-def get_matches(images: Images) -> None:
+"""Step Three"""
+@timeit
+def get_matches(images: Images, **kwargs) -> None:
     """ Match images using k-means clustering.
     Args:
         images: Obj from Images class.
     """
+    img_set_name = kwargs['img_set_name']
     all_descriptors = np.concatenate([image.descriptors for image in images.images])
-    CLUSTER_COUNT: Final = 400
-    ITER: Final = 2
+    CLUSTER_COUNT: Final[int] = 400
+    ITER: Final[int] = 2
     centroids, _ = kmeans(all_descriptors, CLUSTER_COUNT, ITER)
-    matches_ids: list[list[tuple[int, float]]] =  get_matches_ids([image.descriptors for image in images.images], centroids, images.images)
+    matches_ids: list[list[tuple[int, float]]] =  get_matches_ids(
+        [image.descriptors for image in images.images], 
+        centroids, 
+        images.images,
+        **kwargs
+    )
     for i, image in enumerate(images.images):
         inner_list: list[Image, float] = [
             (images.images[match[0]], match[1]) for match in matches_ids[i]
         ]
         image.similar_images = inner_list
+        log_to_file(f"data/{img_set_name}/logs/tune.log", f"Img({image.img_id}, {image.path}) with similar images:")
+        log_message = ' - '.join(f"({img.img_id}, {perc})" for img, perc in inner_list)
+        log_to_file(f"data/{img_set_name}/logs/tune.log", log_message)
 
-
-def get_visual_words(descriptors: list[np.ndarray], centroids: np.ndarray) -> list[np.ndarray]:
+@timeit
+def get_visual_words(descriptors: list[np.ndarray], centroids: np.ndarray, **kwargs) -> list[np.ndarray]:
     """ Get the visual words of a list of descriptors.
     Args:
         descriptors: A list of numpy arrays containing image descriptors.
@@ -209,8 +268,8 @@ def get_visual_words(descriptors: list[np.ndarray], centroids: np.ndarray) -> li
         visual_words.append(words)
     return visual_words
 
-
-def get_frequency_vectors(visual_words: list[np.ndarray], CLUSTER_COUNT: int) -> np.ndarray:
+@timeit
+def get_frequency_vectors(visual_words: list[np.ndarray], CLUSTER_COUNT: int, **kwargs) -> np.ndarray:
     """ Get the frequency vectors for a list of visual words.
     Args:
         visual_words: A list of numpy arrays representing the visual words of each image.
@@ -226,8 +285,8 @@ def get_frequency_vectors(visual_words: list[np.ndarray], CLUSTER_COUNT: int) ->
         frequency_vectors.append(histogram)
     return np.stack(frequency_vectors)
 
-
-def get_tf_idf(frequency_vectors, IMAGES_COUNT) -> np.ndarray:
+@timeit
+def get_tf_idf(frequency_vectors, IMAGES_COUNT, **kwargs) -> np.ndarray:
     """ Get the Term Frequency-Inverse Document Frequency (TF-IDF) matrix for a list of frequency vectors.
     Args:
         frequency_vectors: A numpy array containing the frequency vectors for each image.
@@ -258,35 +317,25 @@ def search_matches(i, top_clusters, tf_idf) -> list[tuple[int, float]]:
     idx = np.argsort(-cosine_similarity)[:top_clusters]
     return list(zip(idx, cosine_similarity[idx]))
 
-
-def get_matches_ids(descriptors, centroids, images_list) -> list[list[tuple[int, float]]]:
+@timeit
+def get_matches_ids(descriptors, centroids, images_list, **kwargs) -> list[list[tuple[int, float]]]:
     """Returns: a list of lists, where each list contains the top 10 most similar images to the i-th image."""
-    visual_words = get_visual_words(descriptors, centroids)
-    frequency_vectors = get_frequency_vectors(visual_words, centroids.shape[0])
+    visual_words = get_visual_words(descriptors, centroids, **kwargs)
+    frequency_vectors = get_frequency_vectors(visual_words, centroids.shape[0], **kwargs)
     """ tf_idf: Term Frequency-Inverse Document Frequency """
-    tf_idf = get_tf_idf(frequency_vectors, len(images_list))
+    tf_idf = get_tf_idf(frequency_vectors, len(images_list), **kwargs)
     return [
         search_matches(i, 10, tf_idf)
         for i in range(len(images_list))
     ]
 
-"""Step Four: Feature Matching
-Inputs:
-- images: Images
+"""Step Four"""
 
-Outputs:
-- None
-
-Main Functions:
-1. data_feature_matching
-
-Utils Functions:
-1. feature_matching
-"""
-
+@timeit
 def feature_matching(
         img_one_descriptors: np.ndarray, 
-        img_two_descriptors: np.ndarray
+        img_two_descriptors: np.ndarray,
+        **kwargs
     ) -> list[OpenCV.DMatch]:
     """ Match features between two images using Brute Force Matcher
     Args:
@@ -299,7 +348,17 @@ def feature_matching(
     matcher = OpenCV.BFMatcher()
     return matcher.match(img_one_descriptors, img_two_descriptors)
 
-def data_feature_matching(images: Images) -> None:
+@timeit
+def apply_ransac(matches, keypoints1, keypoints2, threshold = 3.0, **kwargs):
+    src_pts = np.float32([keypoints1[m.queryIdx].pt for m in matches]).reshape(-1, 1, 2)
+    dst_pts = np.float32([keypoints2[m.trainIdx].pt for m in matches]).reshape(-1, 1, 2)
+
+    _, mask = OpenCV.findHomography(src_pts, dst_pts, OpenCV.RANSAC, threshold)
+    matches_mask = mask.ravel().tolist()
+    return [m for m, keep in zip(matches, matches_mask) if keep]
+
+@timeit
+def data_feature_matching(images: Images, **kwargs) -> None:
     """ Match features between images using Brute Force Matcher
     Args:
         matchesIDs: a list of lists of tuples, where each tuple contains the index of a similar image and the cosine similarity 
@@ -314,41 +373,43 @@ def data_feature_matching(images: Images) -> None:
     num_images: int = len(images.images)
     checked = np.zeros((num_images, num_images), dtype=int)
     for image in images.images:
+        log_to_file("logs/tune.log", f"Started Feature Match for Img({image.img_id}, {image.path}):")
         for matched_image, probability in image.similar_images:
             if ((checked[image.img_id][matched_image.img_id] == 0 or checked[matched_image.img_id][image.img_id] == 0) and image.img_id != matched_image.img_id and probability > 0.93):
-                images.feature_matches.append(FeatureMatches(image, matched_image, feature_matching(image.descriptors, matched_image.descriptors)))
+                feature_matching_output = feature_matching(image.descriptors, matched_image.descriptors)
+                ransac_output = apply_ransac(feature_matching_output, image.keypoints, matched_image.keypoints)
+                images.feature_matches.append(FeatureMatches(image, matched_image, ransac_output))
+                log_to_file("logs/tune.log", f"({image.img_id}, {matched_image.img_id}) with {len(feature_matching_output)}.")
                 checked[image.img_id][matched_image.img_id], checked[matched_image.img_id][image.img_id] = 1, 1
 
-"""Step Five: Camera Calibration
-Inputs:
-- None.
 
-Outputs:
-- k_matrix: np.ndarray
+"""Step Five"""
+@timeit
+def compute_k_matrix(img_path: str, **kwargs) -> np.ndarray:
+    import exifread
+    # Open the image file
+    image = open(img_path, "rb")
+    # Read the EXIF data
+    exif = exifread.process_file(image)
+    # Extract the intrinsic parameters
+    focal_length = exif['EXIF FocalLength'].values[0]
+    sensor_width = exif['EXIF ExifImageWidth'].values[0]
+    sensor_height = exif['EXIF ExifImageLength'].values[0]
+    principal_point_x = exif['EXIF ExifImageWidth'].values[0] / 2
+    principal_point_y = exif['EXIF ExifImageLength'].values[0] / 2
+    # distortion_coefficients = exif['EXIF MakerNote'].values[0]
+    # Calculate the scaling factor for the K-matrix
+    scaling_factor = 1.0
+    return np.array(
+        [
+            [float(focal_length), 0, principal_point_x],
+            [0, float(focal_length), principal_point_y],
+            [0, 0, scaling_factor],
+        ]
+    )
 
-ToDo:
-1- generate K_matrix.pickle for each camera using Chess board pattern.
-"""
 
-"""Step Six: Triangulation (3D Reconstruction)
-Inputs:
-- feature_matches_list: list[list[int, int, list[OpenCV.DMatch]]]
-    -> A list of lists, where each list contains 
-        the index of the first image, the index of the second image, 
-        and a list of OpenCV.DMatch objects.
-- K_matrix: np.ndarray
-    -> The camera matrix of the camera used to take the images.
-
-Outputs:
-- point_cloud: list[np.ndarray]; each element is a 3D point.
-
-Main Functions:
-1. generate_point_cloud
-
-Utils Functions:
-1. triangulatePoints
-"""
-
+"""Step Six"""
 def triangulatePoints(P1, P2, pts1, pts2):
     """
     Triangulates the given matching points from two images using the given camera matrices.
@@ -366,8 +427,8 @@ def triangulatePoints(P1, P2, pts1, pts2):
     pts4D /= pts4D[3]
     return pts4D[:3].T
 
-
-def generate_point_cloud(images: Images, K_matrix):
+@timeit
+def generate_point_cloud(images: Images, K_matrix, **kwargs):
     """
     Generates a cloud of 3D points using triangulation from feature matches and camera calibration matrix.
 
@@ -394,110 +455,175 @@ def generate_point_cloud(images: Images, K_matrix):
         point_cloud.append(pts_3d)
     return np.concatenate(point_cloud, axis=0)
 
-def main(image_set_name: str):
-    print("Welcome ScanMate...")
+
+if __name__ == "__main__":
+    import sys
+    print(sys.executable)
+
+    import enum
+
+    class Mode(enum.Enum):
+        OPTMIZED = "optimized"
+        DEBUG = "debug"
+
+    # image_set_name = "rubik-cube"
+    # image_set_name = "snow-man"
+    image_set_name = "test"
+
+    log_to_file(f"data/{image_set_name}/logs/tune.log", "Welcome ScanMate...")
+    mode: enum = Mode.DEBUG
+    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Running image_set_name {image_set_name} in {mode} mode...")
     images: Optional[Images] = None
-    # Reload the last state
+
+    # 0. Reload the last state
     last_state: str
-    if os.path.isfile(f"bak/{image_set_name}/point-cloud.pkl"):
-        last_state = "Point Cloud Step"
-    elif os.path.isfile(f"bak/{image_set_name}/feature-matching-output.pkl"):
+    if os.path.isfile(f"data/{image_set_name}/bak/feature-matching-output.pkl"):
         last_state = "Feature Matching Step"
-    elif os.path.isfile(f"bak/{image_set_name}/images-matched.pkl"):
+    elif os.path.isfile(f"data/{image_set_name}/bak/images-matched.pkl"):
         last_state = "Images Matching Step"
-    elif os.path.isfile(f"bak/{image_set_name}/sift-features.pkl"):
+    elif os.path.isfile(f"data/{image_set_name}/bak/sift-features.pkl"):
         last_state = "SIFT Features Step"
     else:
         last_state = "Images Loading Step"
-    
+    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Last state for {image_set_name} is {last_state}")
+
     # 1. Load and prepare Images
     if last_state == "Images Loading Step":
-        if os.path.isfile(f"bak/{image_set_name}/images.pkl"):
-            print(f"File [bak/{image_set_name}/sift-images.pkl] exists")
-            print("Loading images from pickle file...")
-            images: Images = load_images_bak(f"bak/{image_set_name}/images.pkl")
+        if os.path.isfile(f"data/{image_set_name}/bak/images.pkl"):
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/sift-images.pkl] exists")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", "Loading images from pickle file...")
+            images: Images = load_images_bak(f"data/{image_set_name}/bak/images.pkl")
         else:
-            print(f"File [bak/{image_set_name}/images.pkl] does not exist")
-            print("Loading images from images directory...")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/images.pkl] does not exist")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", "Loading images from images directory...")
             images: Images = prepare_images(f"images/{image_set_name}")
-            print("Saving images to pickle file...")
-            dump_images_bak(f"bak/{image_set_name}/images.pkl", images)
-        print("Images loaded successfully")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", "Saving images to pickle file...")
+            dump_images_bak(f"data/{image_set_name}/bak/images.pkl", images)
+        log_to_file(f"data/{image_set_name}/logs/tune.log", "Images loaded successfully")
         last_state = "SIFT Features Step"
-    
+
     # 2. Feature Extraction: SIFT
     if last_state == "SIFT Features Step":
-        if os.path.isfile(f"bak/{image_set_name}/sift-features.pkl"):
-            print(f"File [bak/{image_set_name}/sift-features.pkl] exists")
+        if os.path.isfile(f"data/{image_set_name}/bak/sift-features.pkl"):
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/sift-features.pkl] exists")
             if images: 
                 del images
-            images: Images = load_images_bak(f"bak/{image_set_name}/sift-features.pkl")
+            images: Images = load_images_bak(f"data/{image_set_name}/bak/sift-features.pkl")
         else:
-            print("File [bak/{image_set_name}/sift-features.pkl] DO NOT exists")
-            print("Extracting SIFT features...")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", "File [data/{image_set_name}/bak/sift-features.pkl] DO NOT exists")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", "Extracting SIFT features...")
             sift = OpenCV.SIFT_create()
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+            print_size(images, "images")
             compute_keypoints_descriptors(images, sift)
-            dump_images_bak(f"bak/{image_set_name}/sift-features.pkl", images)
-        print("Feature Extraction: SIFT DONE...")
+            print_size(images, "images")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
+            dump_images_bak(f"data/{image_set_name}/bak/sift-features.pkl", images)
+            # remove bak/{image_set_name}/images.pkl
+            if mode == Mode.OPTMIZED:
+                if os.path.exists(f"data/{image_set_name}/bak/images.pkl"):
+                    os.remove(f"data/{image_set_name}/bak/images.pkl")
+                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/images.pkl removed successfully.")
+                else:
+                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/images.pkl does not exist.")
+        log_to_file(f"data/{image_set_name}/logs/tune.log", "Feature Extraction: SIFT DONE...")
         last_state = "Images Matching Step"
-
+    
     # 3. Image Matching
     if last_state == "Images Matching Step":
-        if os.path.isfile(f"bak/{image_set_name}/images-matched.pkl"):
-            print(f"File [bak/{image_set_name}/images-matched.pkl] exists")
+        if os.path.isfile(f"data/{image_set_name}/bak/images-matched.pkl"):
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/images-matched.pkl] exists")
             if images: 
                 del images
-            images: Images = load_images_bak(f"bak/{image_set_name}/images-matched.pkl")
+            images: Images = load_images_bak(f"data/{image_set_name}/bak/images-matched.pkl")
         else:
-            print(f"File [bak/{image_set_name}/images-matched.pkl] DO NOT exists")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/images-matched.pkl] DO NOT exists")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", "Matching images...")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+            print_size(images, "images")
             get_matches(images)
-            dump_images_bak(f"bak/{image_set_name}/images-matched.pkl", images)
-        print("Done Image Matching Step...")
-        last_state = "Feature Matching Step"
+            print_size(images, "images")
+            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
+            dump_images_bak(f"data/{image_set_name}/bak/images-matched.pkl", images)
+            # remove bak/{image_set_name}/sift-features.pkl
+            if mode == Mode.OPTMIZED:
+                if os.path.exists(f"data/{image_set_name}/bak/sift-features.pkl"):
+                    os.remove(f"data/{image_set_name}/bak/sift-features.pkl")
+                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/sift-features.pkl removed successfully.")
+                else:
+                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/sift-features.pkl does not exist.")
+        log_to_file(f"data/{image_set_name}/logs/tune.log", "Done Image Matching Step...")
     
     # 4. Feature Matching
-    if last_state == "Feature Matching Step":
-        if os.path.isfile(f"bak/{image_set_name}/feature-matching-output.pkl"):
-            print(f"File [bak/{image_set_name}/feature-matching-output.pkl] exists")
-            if images: 
-                del images
-            images: Images = load_images_bak(f"bak/{image_set_name}/feature-matching-output.pkl")
-        else:
-            print("File [bak/{image_set_name}/feature-matching-output.pkl] Do NOT exists")
-            # logging.info('----> Processing {image_set_name}...')
-            data_feature_matching(images)
-            dump_images_bak(f"bak/{image_set_name}/feature-matching-output.pkl", images)
-        print("Done Feature Matching Step...")
-        last_state = "Point Cloud Step"
-    
-    # 5. Camera Calibration
-    print("Camera Calibration starts ....")
-    if not os.path.isfile("bak/snow-man/checker/K_matrix.pickle"):
-        raise IntrinsicParametersNotFoundError("Intrinsic parameters not found")
-    print("File bak/snow-man/checker/K_matrix.pickle exists")
-    with open('bak/snow-man/checker/K_matrix.pickle', 'rb') as f:
-        K_matrix = pickle.load(f)
-    
-    # 6. Triangulation (3D reconstruction)
-    print("Triangulation starts ....")
-    if last_state == "Point Cloud Step":
-        if os.path.isfile(f"bak/{image_set_name}/point-cloud.pkl"):
-            with open(f"bak/{image_set_name}/point-cloud.pkl", 'rb') as f:
-                points_cloud: np.ndarray = pickle.load(f)
-        else:
-            points_cloud: np.ndarray = generate_point_cloud(images, K_matrix)
-            # Pickle the point cloud
-            with open(f"bak/{image_set_name}/point-cloud.pkl", 'wb') as f:
-                pickle.dump(points_cloud, f)
-    
-    print(f"points_cloud.shape: {points_cloud.shape}")
+    if os.path.isfile(f"data/{image_set_name}/bak/feature-matching-output.pkl"):
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/feature-matching-output.pkl] exists")
+        if images: 
+            del images
+        images: Images = load_images_bak(f"data/{image_set_name}/bak/feature-matching-output.pkl")
+    else:
+        log_to_file(f"data/{image_set_name}/logs/tune.log", "File [data/{image_set_name}/bak/feature-matching-output.pkl] Do NOT exists")
+        log_to_file(f"data/{image_set_name}/logs/tune.log", "Matching features...")
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+        print_size(images, "images")
+        data_feature_matching(images)
+        print_size(images, "images")
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
+        dump_images_bak(f"data/{image_set_name}/bak/feature-matching-output.pkl", images)
+        # remove bak/{image_set_name}/images-matched.pkl
+        if mode == Mode.OPTMIZED:
+            if os.path.exists(f"data/{image_set_name}/bak/images-matched.pkl"):
+                os.remove(f"data/{image_set_name}/bak/images-matched.pkl")
+                log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/images-matched.pkl removed successfully.")
+            else:
+                log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/images-matched.pkl does not exist.")
+    log_to_file(f"data/{image_set_name}/logs/tune.log", "Done Feature Matching Step...")
 
-    # 7. Generate Mesh
-    print("Generating Mesh ....")
+    # 5. Camera Calibration
+    log_to_file(f"data/{image_set_name}/logs/tune.log", "Camera Calibration starts ....")
+    if not os.path.isfile(f"data/{image_set_name}/bak/K_matrix.pickle"):
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/K_matrix.pickle does not exist")
+        K_matrix = compute_k_matrix(images.images[0].path)
+        with open(f"data/{image_set_name}/bak/K_matrix.pickle", 'wb') as f:
+            pickle.dump(K_matrix, f)
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/K_matrix.pickle saved successfully")
+    else:
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/K_matrix.pickle exists")
+        with open(f"data/{image_set_name}/bak/K_matrix.pickle", 'rb') as f:
+            K_matrix = pickle.load(f)
+    
+    # 6. Triangulation
+    log_to_file(f"data/{image_set_name}/logs/tune.log", "Triangulation starts ....")
+    if os.path.isfile(f"data/{image_set_name}/bak/point-cloud.pkl"):
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/point-cloud.pkl exists")
+        with open(f"data/{image_set_name}/bak/point-cloud.pkl", 'rb') as f:
+            points_cloud: np.ndarray = pickle.load(f)
+    else:
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/point-cloud.pkl does not exist")
+        log_to_file(f"data/{image_set_name}/logs/tune.log", "Triangulating...")
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+        print_size(images, "images")
+        points_cloud: np.ndarray = generate_point_cloud(images, K_matrix)
+        print_size(images, "images")
+        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
+        # Pickle the point cloud
+        with open(f"data/{image_set_name}/bak/point-cloud.pkl", 'wb') as f:
+            pickle.dump(points_cloud, f)
+    log_to_file(f"data/{image_set_name}/logs/tune.log", "Done Point Cloud Step...")
+
+    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+    print_size(images, "images")
+    print_size(points_cloud, "points_cloud")
+    images = None
+    log_to_file(f"data/{image_set_name}/logs/tune.log", gc.collect())
+    print_size(images, "images")
+    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Reference count<images>: {sys.getrefcount(images)}")
+    log_to_file(f"data/{image_set_name}/logs/tune.log", gc.collect())
+
+    # 7. 3D reconstruction
+    log_to_file(f"data/{image_set_name}/logs/tune.log", "3D reconstruction starts ....")
+    import open3d as o3d
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(points_cloud[:,:3])
-    # Save it as a.STL file
-    o3d.io.write_point_cloud("point_cloud.ply", pcd)
 
-if __name__ == "__main__":
-    main("snow-man")
+    # Save it as a .PLY file
+    o3d.io.write_point_cloud(f"data/{image_set_name}/output/point_cloud_before_clustring.ply", pcd)
