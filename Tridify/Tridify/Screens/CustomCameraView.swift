@@ -80,6 +80,7 @@ struct CustomCameraView: View {
         .sheet(isPresented: $showSheet, onDismiss: {
             if (deleteLast){
                 _ = capturedImagesData.popLast()
+                deleteLast = false
             }
         }) {
             ImagesView(capturedData: $capturedImagesData, deleteLast: $deleteLast)

@@ -32,7 +32,7 @@ struct HomeView: View {
                 .animation(.easeIn, value: cameraViewOn)
             }
             else {
-                GalleryView()
+                GalleryView(cameraViewOn: $cameraViewOn)
             }
         }
     }

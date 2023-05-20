@@ -14,6 +14,8 @@
 		AE44258D2A061FFA00ADD324 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE44258C2A061FFA00ADD324 /* HomeView.swift */; };
 		AE45CA902A17A5B9004D9296 /* Room1.obj in Resources */ = {isa = PBXBuildFile; fileRef = AE45CA8F2A17A5B9004D9296 /* Room1.obj */; };
 		AE45CAC02A17BBDE004D9296 /* point_cloud.ply in Resources */ = {isa = PBXBuildFile; fileRef = AE45CA912A17B3CE004D9296 /* point_cloud.ply */; };
+		AE45CAC22A17BD93004D9296 /* DeathBottle_Bottle.stl in Resources */ = {isa = PBXBuildFile; fileRef = AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */; };
+		AE45CAC42A17F981004D9296 /* ModelSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE45CAC32A17F981004D9296 /* ModelSceneView.swift */; };
 		AE4DD67B2A1285ED00F03AF2 /* ImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */; };
 		AE53BC762A157905002B9977 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE53BC752A157905002B9977 /* GalleryView.swift */; };
 		AE53BC792A157C8F002B9977 /* Model3DView in Frameworks */ = {isa = PBXBuildFile; productRef = AE53BC782A157C8F002B9977 /* Model3DView */; };
@@ -37,6 +39,8 @@
 		AE45CA8F2A17A5B9004D9296 /* Room1.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Room1.obj; sourceTree = "<group>"; };
 		AE45CA912A17B3CE004D9296 /* point_cloud.ply */ = {isa = PBXFileReference; lastKnownFileType = file; path = point_cloud.ply; sourceTree = "<group>"; };
 		AE45CABE2A17B870004D9296 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = DeathBottle_Bottle.stl; sourceTree = "<group>"; };
+		AE45CAC32A17F981004D9296 /* ModelSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSceneView.swift; sourceTree = "<group>"; };
 		AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesView.swift; sourceTree = "<group>"; };
 		AE53BC752A157905002B9977 /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
 		AE7AF15529F9A7BE00079337 /* Tridify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tridify.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +89,7 @@
 				AE45CABE2A17B870004D9296 /* Info.plist */,
 				AE7AF15829F9A7BE00079337 /* TridifyApp.swift */,
 				AE45CA912A17B3CE004D9296 /* point_cloud.ply */,
+				AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */,
 				AE45CA8F2A17A5B9004D9296 /* Room1.obj */,
 				AEEC4D0D2A110CC5009F1F09 /* Screens */,
 				AEEC4D0E2A110D32009F1F09 /* UtilitiesViews */,
@@ -114,6 +119,7 @@
 				AEEC4D152A112B51009F1F09 /* CustomCameraView.swift */,
 				AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */,
 				AE53BC752A157905002B9977 /* GalleryView.swift */,
+				AE45CAC32A17F981004D9296 /* ModelSceneView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -209,6 +215,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE45CAC22A17BD93004D9296 /* DeathBottle_Bottle.stl in Resources */,
 				AE45CAC02A17BBDE004D9296 /* point_cloud.ply in Resources */,
 				AE7AF16029F9A7BF00079337 /* Preview Assets.xcassets in Resources */,
 				AE45CA902A17A5B9004D9296 /* Room1.obj in Resources */,
@@ -232,6 +239,7 @@
 				AE18AB3E29FEDBD600D547A0 /* ButtonOneView.swift in Sources */,
 				AE53BC762A157905002B9977 /* GalleryView.swift in Sources */,
 				AE35492B29FC6B6200456673 /* Color-Theme.swift in Sources */,
+				AE45CAC42A17F981004D9296 /* ModelSceneView.swift in Sources */,
 				AE7F81AF29FA465C005073C8 /* onBoardingView.swift in Sources */,
 				AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */,
 				AE35492929FC63DC00456673 /* LoginView.swift in Sources */,
