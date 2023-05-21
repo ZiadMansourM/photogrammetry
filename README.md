@@ -1,6 +1,6 @@
 # 📝 Pipeline
 ```Console
-*** We have the following steps in our pipeline:
+*** We have the following 7 steps in our pipeline:
 $ prepare_images
 $ compute_keypoints_descriptors
 $ image_matching
