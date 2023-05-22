@@ -8,7 +8,7 @@ def rename_images(directory: str) -> None:
     - directory: The path to the directory containing the images.
     """
     # Get a list of all .JPG files in the directory
-    image_files = glob.glob(os.path.join(directory, "*.JPG"))
+    image_files = glob.glob(os.path.join(directory, "*.JPG.mask.png"))
 
     # Iterate over the image files and rename them
     for idx, image_file in enumerate(image_files, start=1):
@@ -22,5 +22,5 @@ def rename_images(directory: str) -> None:
         print(f"Renamed {image_file} to {new_file_path}")
 
 # Replace 'path_to_directory' with the actual path to the directory containing the images
-path_to_directory = r"C:\Users\yousf\OneDrive\Desktop\University\Graduation Project\Codes\photogrammetry\src\data\hammer\images"
+path_to_directory = r"C:\Users\yousf\OneDrive\Desktop\University\Graduation Project\Codes\photogrammetry\src\data\hammer\masked_images"
 rename_images(path_to_directory)
