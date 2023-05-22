@@ -1,15 +1,26 @@
 import os
+import glob
 
-directory = "/Users/ziadh/Desktop/college/gp/src/images/snow-man"  # Specify the directory containing the images
-extension = ".jpg"  # Specify the file extension of the images
+def rename_images(directory: str) -> None:
+    """Renames all .JPG images in a directory to a range of numbers and changes their extension to .jpg.
+    
+    Args:
+    - directory: The path to the directory containing the images.
+    """
+    # Get a list of all .JPG files in the directory
+    image_files = glob.glob(os.path.join(directory, "*.JPG.mask.png"))
 
-# Get a list of all image files in the directory
-image_files = [f for f in os.listdir(directory) if f.endswith(extension)]
+    # Iterate over the image files and rename them
+    for idx, image_file in enumerate(image_files, start=1):
+        # Create the new file name with the updated extension
+        new_file_name = f"{idx}.jpg"
+        new_file_path = os.path.join(directory, new_file_name)
 
-# Sort the image files alphabetically
-image_files.sort()
+        # Rename the file
+        os.rename(image_file, new_file_path)
 
-# Rename the image files
-for i, filename in enumerate(image_files, start=1):
-    new_filename = os.path.join(directory, f"{i}{extension}")
-    os.rename(os.path.join(directory, filename), new_filename)
+        print(f"Renamed {image_file} to {new_file_path}")
+
+# Replace 'path_to_directory' with the actual path to the directory containing the images
+path_to_directory = r"C:\Users\yousf\OneDrive\Desktop\University\Graduation Project\Codes\photogrammetry\src\data\hammer\masked_images"
+rename_images(path_to_directory)

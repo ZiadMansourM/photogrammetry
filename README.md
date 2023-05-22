@@ -1,51 +1,36 @@
-# This would be frequently updated according to what i've found so far
+# 📝 Pipeline
 ```Console
-*** My plan would be as follows:
-$ explore https://github.com/alicevision/Meshroom
-$ explore https://github.com/openphotogrammetry/meshroomcl
-$ finish Photogrammetry I & II
+*** We have the following 7 steps in our pipeline:
+$ prepare_images
+$ compute_keypoints_descriptors
+$ image_matching
+$ data_feature_matching
+$ compute_k_matrix
+$ generate_point_cloud
+$ 3D reconstruction
 ```
 
-## 🦦 course [Photogrammetry I & II](https://www.ipb.uni-bonn.de/photogrammetry-i-ii/)
-- Photogrammetry I - [link](https://www.ipb.uni-bonn.de/photo12-2021/).
-- Photogrammetry II - [link](https://www.ipb.uni-bonn.de/photo12-2021/#2).
+## 🏛️ Datasets
+- [X] snow-man.
+- [X] hammer.
+- [ ] cottage
+
+> ? Something simplier and on our own terms
+
+## ❌ Problems
+#### Poor Feature Matches
+#### Annoying Magic numbers
+- number of clusters.
+- Ransic threshold.
+
+## 🧐 What we noticed that caused poor feature match:
+- Blury images.
+- Change in focus.
+- Change in distance.
 
 
-
-
-## 🐳 Study Photogrammetry I & II
-- [ ] Introduction to Photogrammetry.
-- [ ] Camera Basics.
-- [ ] Sensor and Image Model.
-- [ ] Histograms and Point Operators.
-- [ ] Binary Images.
-- [ ] Classification.
-- [ ] Ensemble Methods for Classification.
-- [ ] Dimensionality Reduction.
-- [ ] Local Operators.
-- [ ] Matching.
-- [ ] Geometric Transformations on Images.
-- [ ] Feature Detection – Edge Detection.
-- [ ] Feature Detection – Förstner Operator.
-- [ ] Image Segmentation and Clustering.
-- [ ] Homogeneous Coordinates.
-- [ ] Camera Extrinsics and Intrinsics.
-- [ ] Camera Orientation.
-- [ ] Geometry of the Image Pair.
-- [ ] Epipolar Geometry.
-- [ ] Direct Solution for the Relative Orientation.
-- [ ] Iterative Solution for the Relative Orientation.
-- [ ] Spatial forward intersection.
-- [ ] Absolute Orientation.
-- [ ] Orientation of the Image Pair.
-- [ ] Multi-View Geometry.
-- [ ] Bundle Adjustment.
-- [ ] Aerotriangulation.
-- [ ] Orthophoto.
-- [ ] Incremental State Estimation.
-- [ ] Linear, Extended, and Unscented Kalman Filter.
-- [ ] Simultaneous Localization and Mapping with the EKF.
-
-
-
-## 🤔 Explore [Meshroom](https://github.com/alicevision/Meshroom) && [meshroomcl](https://github.com/openphotogrammetry/meshroomcl)
+## ❓ Questions
+#### Shall we use maske and where ?
+#### Scalling ?
+#### How to improve feature match? deep feature?
+ 
