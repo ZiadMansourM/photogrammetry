@@ -21,7 +21,7 @@ $ 3D reconstruction
 #### Annoying Magic numbers
 - number of clusters while image matching.
 - Ransic threshold.
-#### Triangulation Step looks to be UnFold
+#### Triangulation Step looks to UnFold Object Points
 
 ## 🧐 What we noticed that caused poor feature match:
 - Blury images.
