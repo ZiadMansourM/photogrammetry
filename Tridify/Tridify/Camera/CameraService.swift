@@ -43,7 +43,7 @@ class CameraService {
     
     private func setupCamera(completion: @escaping (Error?) -> ()){
         let session = AVCaptureSession()
-        if let device = AVCaptureDevice.default(for: .video){
+        if let device = AVCaptureDevice.default(for: .video) {
             do {
                 let input = try AVCaptureDeviceInput(device: device)
                 if session.canAddInput(input){
@@ -64,6 +64,8 @@ class CameraService {
             }
         }
     }
+    
+
     
     func capturePhotos(with settings: AVCapturePhotoSettings = AVCapturePhotoSettings(format: [AVVideoCodecKey: AVVideoCodecType.jpeg])){
         output.capturePhoto(with: settings, delegate: delegate!)

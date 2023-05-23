@@ -13,17 +13,18 @@
 		AE35492B29FC6B6200456673 /* Color-Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE35492A29FC6B6200456673 /* Color-Theme.swift */; };
 		AE44258D2A061FFA00ADD324 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE44258C2A061FFA00ADD324 /* HomeView.swift */; };
 		AE45CA902A17A5B9004D9296 /* Room1.obj in Resources */ = {isa = PBXBuildFile; fileRef = AE45CA8F2A17A5B9004D9296 /* Room1.obj */; };
-		AE45CAC02A17BBDE004D9296 /* point_cloud.ply in Resources */ = {isa = PBXBuildFile; fileRef = AE45CA912A17B3CE004D9296 /* point_cloud.ply */; };
 		AE45CAC22A17BD93004D9296 /* DeathBottle_Bottle.stl in Resources */ = {isa = PBXBuildFile; fileRef = AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */; };
 		AE45CAC42A17F981004D9296 /* ModelSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE45CAC32A17F981004D9296 /* ModelSceneView.swift */; };
 		AE4DD67B2A1285ED00F03AF2 /* ImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */; };
 		AE53BC762A157905002B9977 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE53BC752A157905002B9977 /* GalleryView.swift */; };
 		AE53BC792A157C8F002B9977 /* Model3DView in Frameworks */ = {isa = PBXBuildFile; productRef = AE53BC782A157C8F002B9977 /* Model3DView */; };
+		AE62AAF82A193C7000A4EA05 /* point_cloud.stl in Resources */ = {isa = PBXBuildFile; fileRef = AE62AAF72A193C4400A4EA05 /* point_cloud.stl */; };
 		AE7AF15929F9A7BE00079337 /* TridifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7AF15829F9A7BE00079337 /* TridifyApp.swift */; };
 		AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7AF15A29F9A7BE00079337 /* ContentView.swift */; };
 		AE7AF15D29F9A7BF00079337 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15C29F9A7BF00079337 /* Assets.xcassets */; };
 		AE7AF16029F9A7BF00079337 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */; };
 		AE7F81AF29FA465C005073C8 /* onBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7F81AE29FA465C005073C8 /* onBoardingView.swift */; };
+		AEBAC85F2A1A941E00F2CFF6 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAC85E2A1A941E00F2CFF6 /* SendView.swift */; };
 		AED440B529FB94510083FDC1 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED440B429FB94510083FDC1 /* LogoView.swift */; };
 		AEEC4D122A110F5D009F1F09 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEC4D112A110F5D009F1F09 /* CameraService.swift */; };
 		AEEC4D142A1122F3009F1F09 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEC4D132A1122F3009F1F09 /* CameraView.swift */; };
@@ -37,18 +38,19 @@
 		AE35492A29FC6B6200456673 /* Color-Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color-Theme.swift"; sourceTree = "<group>"; };
 		AE44258C2A061FFA00ADD324 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		AE45CA8F2A17A5B9004D9296 /* Room1.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Room1.obj; sourceTree = "<group>"; };
-		AE45CA912A17B3CE004D9296 /* point_cloud.ply */ = {isa = PBXFileReference; lastKnownFileType = file; path = point_cloud.ply; sourceTree = "<group>"; };
 		AE45CABE2A17B870004D9296 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = DeathBottle_Bottle.stl; sourceTree = "<group>"; };
 		AE45CAC32A17F981004D9296 /* ModelSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSceneView.swift; sourceTree = "<group>"; };
 		AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesView.swift; sourceTree = "<group>"; };
 		AE53BC752A157905002B9977 /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
+		AE62AAF72A193C4400A4EA05 /* point_cloud.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = point_cloud.stl; sourceTree = "<group>"; };
 		AE7AF15529F9A7BE00079337 /* Tridify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tridify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE7AF15829F9A7BE00079337 /* TridifyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TridifyApp.swift; sourceTree = "<group>"; };
 		AE7AF15A29F9A7BE00079337 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AE7AF15C29F9A7BF00079337 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE7F81AE29FA465C005073C8 /* onBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onBoardingView.swift; sourceTree = "<group>"; };
+		AEBAC85E2A1A941E00F2CFF6 /* SendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendView.swift; sourceTree = "<group>"; };
 		AED440B429FB94510083FDC1 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		AEEC4D112A110F5D009F1F09 /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
 		AEEC4D132A1122F3009F1F09 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
@@ -88,7 +90,7 @@
 			children = (
 				AE45CABE2A17B870004D9296 /* Info.plist */,
 				AE7AF15829F9A7BE00079337 /* TridifyApp.swift */,
-				AE45CA912A17B3CE004D9296 /* point_cloud.ply */,
+				AE62AAF72A193C4400A4EA05 /* point_cloud.stl */,
 				AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */,
 				AE45CA8F2A17A5B9004D9296 /* Room1.obj */,
 				AEEC4D0D2A110CC5009F1F09 /* Screens */,
@@ -120,6 +122,7 @@
 				AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */,
 				AE53BC752A157905002B9977 /* GalleryView.swift */,
 				AE45CAC32A17F981004D9296 /* ModelSceneView.swift */,
+				AEBAC85E2A1A941E00F2CFF6 /* SendView.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -215,8 +218,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE62AAF82A193C7000A4EA05 /* point_cloud.stl in Resources */,
 				AE45CAC22A17BD93004D9296 /* DeathBottle_Bottle.stl in Resources */,
-				AE45CAC02A17BBDE004D9296 /* point_cloud.ply in Resources */,
 				AE7AF16029F9A7BF00079337 /* Preview Assets.xcassets in Resources */,
 				AE45CA902A17A5B9004D9296 /* Room1.obj in Resources */,
 				AE7AF15D29F9A7BF00079337 /* Assets.xcassets in Resources */,
@@ -244,6 +247,7 @@
 				AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */,
 				AE35492929FC63DC00456673 /* LoginView.swift in Sources */,
 				AE18AB4029FF071D00D547A0 /* AccountStatusView.swift in Sources */,
+				AEBAC85F2A1A941E00F2CFF6 /* SendView.swift in Sources */,
 				AE7AF15929F9A7BE00079337 /* TridifyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

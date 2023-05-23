@@ -10,7 +10,7 @@ import SceneKit
 
 struct ModelSceneView: View {
     
-    private let path = URL(fileURLWithPath: Bundle.main.path(forResource: "DeathBottle_Bottle", ofType: "stl")!)
+    private let path = URL(fileURLWithPath: Bundle.main.path(forResource: "point_cloud", ofType: "stl")!)
     private let modelName: String?
     @State private var scene: SCNScene?
     @State private var error: Error?

@@ -12,10 +12,16 @@ struct CustomCameraView: View {
     let cameraService = CameraService()
     
     @State var capturedImagesData = [Data]()
-    @State var lastCapturedImage: UIImage? = nil
+    @State var jpegRepresentationData = [Data]()
     @State private var showSheet = false
+    @State private var showSendSheet = false
+    @State private var showAlert = false
     @State private var deleteLast = false
-    @Environment (\.colorScheme) private var colorScheme
+    private let minImagesCount = 10
+    private var sendFlag: Bool {
+        capturedImagesData.count > minImagesCount
+    }
+    
     var body: some View {
         GeometryReader { geo in
             VStack {
@@ -23,10 +29,16 @@ struct CustomCameraView: View {
                     switch result {
                     case .success(let photo):
                         if let data = photo.fileDataRepresentation() {
-                            if let capturedImage = UIImage(data: data){
-                                print("capturedImage size: \(capturedImagesData.count)")
+                            if let image = UIImage(data: data){
                                 capturedImagesData.append(data)
-                                lastCapturedImage = capturedImage
+                                if let jpegData = image.jpegData(compressionQuality: 1){
+                                    jpegRepresentationData.append(jpegData)
+                                    
+                                }
+                                else {
+                                    print ("jpegRepresentation error")
+                                }
+                                
                             }
                             else {
                                 print("Couldn't transform the data to image")
@@ -42,7 +54,36 @@ struct CustomCameraView: View {
                 }
                 VStack {
                     HStack {
-                        Spacer()
+                        Button {
+                            if !sendFlag {
+                                
+                            }
+                            else {
+                                var imagesSize = 0.0
+                                for data in jpegRepresentationData {
+                                    imagesSize += Double(data.count)
+                                }
+                                imagesSize /= 1024
+                                imagesSize /= 1024
+                                print("Image Size \(imagesSize) MB")
+                                
+                            }
+                            
+                        } label: {
+                            HStack {
+                                Text("Send")
+                                Image(systemName: "checkmark")
+                            }
+                            .font(.subheadline)
+                            .kerning(2)
+                            .foregroundColor(.black)
+                            .frame(width: 100, height: 40)
+                            .background(sendFlag ? .white : .gray)
+                            .clipShape(
+                                Capsule()
+                            )
+                        }
+                        .disabled(!sendFlag)
                         Spacer()
                         Button {
                             cameraService.capturePhotos()
@@ -70,10 +111,10 @@ struct CustomCameraView: View {
                                     .foregroundColor(.emptyImage)
                             }
                         }
-                        .padding(.horizontal, 8)
                         
                     }
                     .padding(.bottom)
+                    .padding(.horizontal, 8)
                 }
             }
         }
@@ -81,11 +122,22 @@ struct CustomCameraView: View {
             if (deleteLast){
                 _ = capturedImagesData.popLast()
                 deleteLast = false
-            }
+        }
         }) {
             ImagesView(capturedData: $capturedImagesData, deleteLast: $deleteLast)
         }
+        .alert("Take more captures", isPresented: $showAlert) {
+            Button ("OK", role: .cancel) {}
+        } message: {
+            Text ("The limit of images to create 3D model is \(minImagesCount)")
+        }
         .preferredColorScheme(.dark)
+    }
+}
+
+struct CustomCameraView_Previews: PreviewProvider {
+    static var previews: some View {
+        CustomCameraView()
     }
 }
 

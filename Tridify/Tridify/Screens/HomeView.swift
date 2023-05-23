@@ -11,13 +11,13 @@ struct HomeView: View {
     
     @AppStorage("onBoarding") var onBoarding = false
     @State private var cameraViewOn = true
-    
+    @State private var isShowing = false
     var body: some View {
         GeometryReader { geo in
             if cameraViewOn {
                 VStack(alignment: .trailing) {
                     Button {
-                        cameraViewOn = false
+                        isShowing.toggle()
                     } label: {
                         Image(systemName: "x.circle")
                             .font(.system(size: 40))
@@ -34,6 +34,16 @@ struct HomeView: View {
             else {
                 GalleryView(cameraViewOn: $cameraViewOn)
             }
+        }
+        .alert("Close Camera", isPresented: $isShowing) {
+            HStack {
+                Button("Close", role: .destructive){
+                    cameraViewOn = false
+                }
+                Button("Cancel", role: .cancel){}
+            }
+        } message: {
+            Text("Are you sure you want to close the camera?, All the captured images will be lost")
         }
     }
 }
