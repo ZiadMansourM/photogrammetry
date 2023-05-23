@@ -22,6 +22,7 @@ $ 3D reconstruction
 - number of clusters while image matching.
 - Ransic threshold.
 #### Triangulation Step looks to UnFold Object Points
+#### Masking Regular Objects for datasets with UnMasked Images
 
 ## 🧐 What we noticed that caused poor feature match:
 - Blury images.
