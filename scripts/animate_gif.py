@@ -1,17 +1,22 @@
-import imageio
-import glob
-import cv2
 import os
+import subprocess
 
-image_paths = glob.glob(os.path.join(r"C:\Users\yousf\OneDrive\Desktop\University\Graduation Project\Codes\photogrammetry\src\data\hammer\testing_feature_match", "*.jpg"))
-image_paths.sort(key=lambda x: int(os.path.splitext(os.path.basename(x))[0]))
-output_path = r'C:\Users\yousf\OneDrive\Desktop\University\Graduation Project\Codes\photogrammetry\src\data\hammer\testing_feature_match\output.gif'
-new_size = (800, 800)
-# print("\n".join([path for path in image_paths]))
-with imageio.get_writer(output_path, mode='I', duration=10) as writer:
-    for image_path in image_paths:
-        image = imageio.imread(image_path)
-        resized_image = cv2.resize(image, new_size, interpolation=cv2.INTER_LINEAR)
-        writer.append_data(resized_image)
-        print("Done appending image: ", image_path)
-print("Done creating gif")
+image_directory = r"E:\Project\photogrammetry\src\data\cottage\output\temp\testing_feature_match"
+output_path = r"E:\Project\photogrammetry\src\data\cottage\output\temp\testing_feature_match\output.mp4"  # Update with the desired output path
+framerate = 120
+
+# Get a list of image files in the directory
+image_files = [f for f in os.listdir(image_directory) if f.endswith(".jpg")]
+image_files.sort(key=lambda x: int(os.path.splitext(os.path.basename(x))[0]))
+
+# Create a temporary file with a list of input images
+with open("input_files.txt", "w") as f:
+    for image_file in image_files:
+        f.write(f"file '{os.path.join(image_directory, image_file)}'\n")
+
+# Run FFmpeg command to create a video
+command = f'ffmpeg -y -f concat -safe 0 -i "input_files.txt" -framerate {framerate} -c:v libx264 -pix_fmt yuv420p "{output_path}"'
+subprocess.run(command, shell=True, check=True)
+
+# Remove temporary file
+os.remove("input_files.txt")
