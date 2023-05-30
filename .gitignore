@@ -23,6 +23,7 @@
 **/ref/
 **/bak/
 **/logs/
+**/masks/
 **/output/
 !README.md
 **.md
