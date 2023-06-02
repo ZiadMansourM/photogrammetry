@@ -18,6 +18,7 @@
 **/**.STL
 **/**.obj
 **/**-local.**
+**/**-local
 
 **/images/
 **/ref/
