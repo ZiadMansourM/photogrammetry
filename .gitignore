@@ -17,7 +17,7 @@
 **/**.ply
 **/**.STL
 **/**.obj
-**/**-local
+**/**-local.**
 
 **/images/
 **/ref/
@@ -26,7 +26,6 @@
 **/masks/
 **/output/
 !README.md
-**.md
 
 
 # Xcode
