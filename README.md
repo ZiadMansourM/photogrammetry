@@ -49,3 +49,9 @@ https://github.com/ZiadMansourM/photogrammetry/assets/81488138/16dc84d2-a7fd-49f
 
 #### Traingulation Without Hand-Written Labels (Yesterday)
 ![Hammer_Points_Cloud](https://github.com/ZiadMansourM/photogrammetry/assets/81488138/d49e9630-ba6d-466a-bbf0-92ced86d6867)
+
+
+License
+-------
+
+This project is licensed under the terms of the GNU General Public License version 3.0 (GPLv3). See the LICENSE file for details.
