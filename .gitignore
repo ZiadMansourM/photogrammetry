@@ -27,6 +27,10 @@
 **/masks/
 **/output/
 !README.md
+**/u2net.onnx
+**/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
+**/certs
+**/html
 
 
 # Xcode

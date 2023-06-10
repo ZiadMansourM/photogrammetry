@@ -1,0 +1,17 @@
+_format_version: "2.1"
+_transform: true
+
+services:
+  - name: app-service
+    url: http://app:8000
+    routes:
+      - name: app-service-routes
+        paths:
+          - /api
+        strip_path: true
+
+plugins:
+  - name: rate-limiting
+    config:
+      minute: 10
+      policy: local
