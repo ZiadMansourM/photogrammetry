@@ -29,7 +29,7 @@ jobs:
           sudo docker-compose down
           cd /home/scanmate
           sudo rm -rf src
-          sudo rm conf/nginx.conf
+          sudo rm /home/scanmate/conf/nginx.conf
         EOF
         scp -i ~/.ssh/private_key.pem -r production/src "$SERVER_USERNAME@$SERVER_IP:/home/scanmate/src"
         scp -i ~/.ssh/private_key.pem -r conf/nginx.conf "$SERVER_USERNAME@$SERVER_IP:/home/scanmate/conf/nginx.conf"
