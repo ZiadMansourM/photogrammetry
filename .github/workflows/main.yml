@@ -1,0 +1,31 @@
+name: Deploy Production
+
+on:
+  push:
+    paths:
+      - 'production/**'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: SSH and Deploy
+      env:
+        DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
+      run: |
+        echo "$DEPLOY_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        scp -i private_key.pem -r production "$SERVER_USERNAME@$SERVER_IP:/home/scanmate/production"
+        ssh -i private_key.pem -o StrictHostKeyChecking=no "$SERVER_USERNAME@$SERVER_IP" << EOF
+          cd /home/scanmate/production
+          mkdir -p data
+          docker-compose up --build -d
+        EOF
+        rm private_key.pem
