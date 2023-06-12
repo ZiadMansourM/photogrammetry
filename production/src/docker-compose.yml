@@ -14,20 +14,38 @@ services:
       KONG_ADMIN_LISTEN: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
       KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
     command: "kong start"
-    ports:
-      - "80:8000" # incoming HTTP traffic
-      - "443:8443" # incoming HTTPS traffic
-      - "8001:8001" # Admin API HTTP
-      - "8444:8444" # Admin API HTTPS
+    expose:
+      - 8000
     volumes:
       - ./configurations/kong-config:/opt/kong
     depends_on:
       - app
+
   app:
     build: .
+    expose:
+      - 8000
     volumes:
       - ../data:/app/data
       - ./configurations/u2net.onnx:/root/.u2net/u2net.onnx
       - ./configurations/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5:/root/.keras/models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
+
+  nginx:
+    image: nginx:1.21.3-alpine
+    volumes:
+      - ./configurations/nginx.conf:/etc/nginx/nginx.conf
+      - ./configurations/certs:/etc/letsencrypt
+      - ./configurations/logs:/var/log/nginx
     ports:
-      - 8000:8000
+      - 80:80
+      - 443:443
+    depends_on:
+      - kong
+
+  certbot:
+    image: certbot/certbot
+    command: certonly --webroot --webroot-path=/var/www/html --email ziadmansour.4.9.2000@gmail.com --agree-tos --no-eff-email --staging -d scanmate.sreboy.com
+    volumes:
+      - ./configurations/certs:/etc/letsencrypt
+      - ./configurations/logs:/var/log/letsencrypt
+      - ./configurations/html:/var/www/html
