@@ -24,6 +24,12 @@ jobs:
         echo "$DEPLOY_KEY" > ~/.ssh/private_key.pem
         chmod 600 ~/.ssh/private_key.pem
         ssh-keyscan -H "$SERVER_IP" >> ~/.ssh/known_hosts
+        ssh -i ~/.ssh/private_key.pem -o StrictHostKeyChecking=no "$SERVER_USERNAME@$SERVER_IP" << EOF
+          cd /home/scanmate/src
+          sudo docker-compose down
+          cd /home/scanmate
+          rm -rf src
+        EOF
         scp -i ~/.ssh/private_key.pem -r production/src "$SERVER_USERNAME@$SERVER_IP:/home/scanmate/src"
         ssh -i ~/.ssh/private_key.pem -o StrictHostKeyChecking=no "$SERVER_USERNAME@$SERVER_IP" << EOF
           cd /home/scanmate/src
