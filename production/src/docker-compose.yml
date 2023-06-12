@@ -36,6 +36,7 @@ services:
       - ./configurations/nginx.conf:/etc/nginx/nginx.conf
       - ./configurations/certs:/etc/letsencrypt
       - ./configurations/logs:/var/log/nginx
+      - ./configurations/html:/var/www/html
     ports:
       - 80:80
       - 443:443
