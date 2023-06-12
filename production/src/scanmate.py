@@ -41,11 +41,11 @@ def print_size(file_name: str, obj, obj_name="N/A"):
 def timeit(func):
     def wrapper(*args, **kwargs):
         image_set_name = kwargs['image_set_name']
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Started {func.__name__}...")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Started {func.__name__}...")
         start_time = time.time()
         result = func(*args, **kwargs)
         end_time = time.time()
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Done {func.__name__} took {end_time - start_time:,} seconds to execute.")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Done {func.__name__} took {end_time - start_time:,} seconds to execute.")
         return result
     return wrapper
 
@@ -75,7 +75,7 @@ class Image:
         
     
     def save_sift_features(self):
-        output_filename = f"data/{self.image_set_name}/output/sift/{self.img_id}_sift_features.jpg"
+        output_filename = f"../data/{self.image_set_name}/output/sift/{self.img_id}_sift_features.jpg"
         image_with_sift = OpenCV.drawKeypoints(self.rgb_image, self.keypoints, None, flags=OpenCV.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
         OpenCV.imwrite(output_filename, OpenCV.cvtColor(image_with_sift, OpenCV.COLOR_RGB2BGR))
 
@@ -247,7 +247,7 @@ class Images:
 
     def save_feature_matches(self):
         for match in self.feature_matches:
-            match.draw_matches(f"data/{self.image_set_name}/output/feature-match/{match.image_one.img_id}_{match.image_two.img_id}.jpg")
+            match.draw_matches(f"../data/{self.image_set_name}/output/feature-match/{match.image_one.img_id}_{match.image_two.img_id}.jpg")
 
     def __len__(self):
         return len(self.images)
@@ -265,10 +265,10 @@ class Images:
 
     def save_similar_images(self):
         for cluster in self.similar_images.keys():
-            if not os.path.exists(f"data/{self.image_set_name}/output/image-match/{cluster}"):
-                os.makedirs(f"data/{self.image_set_name}/output/image-match/{cluster}")
+            if not os.path.exists(f"../data/{self.image_set_name}/output/image-match/{cluster}"):
+                os.makedirs(f"../data/{self.image_set_name}/output/image-match/{cluster}")
             for value in self.similar_images[cluster]:
-                OpenCV.imwrite(f"data/{self.image_set_name}/output/image-match/{cluster}/{value.img_id}.jpg", value.rgb_image)
+                OpenCV.imwrite(f"../data/{self.image_set_name}/output/image-match/{cluster}/{value.img_id}.jpg", value.rgb_image)
 
     def __getitem__(self, key: int) -> Image:
         for image in self.images:
@@ -293,7 +293,7 @@ def load_images_bak(images_file_path: str) -> Images:
 @timeit
 def prepare_images(create_mask = True, **kwargs) -> Images:
     image_set_name = kwargs['image_set_name']
-    folder_path = f"data/{image_set_name}"
+    folder_path = f"../data/{image_set_name}"
     images: Images = Images([], folder_path.split("/")[-1])
     files: list[str] = list(
         filter(
@@ -336,7 +336,7 @@ def compute_keypoints_descriptors(images: list[Image], SIFT: OpenCV.SIFT, **kwar
         keypoints, descriptors = SIFT.detectAndCompute(dialated_image, None)
         img.keypoints = keypoints
         img.descriptors = descriptors
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Img({img.img_id}, {img.path}) has {len(img.keypoints)} keypoints and {len(img.descriptors)} descriptors.")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Img({img.img_id}, {img.path}) has {len(img.keypoints)} keypoints and {len(img.descriptors)} descriptors.")
 
 
 @timeit
@@ -400,7 +400,7 @@ def image_matching(images_obj: Images, overwrite:bool =False, **kwargs) -> None:
         return img
 
     image_set_name = kwargs['image_set_name']
-    image_dir = f'data/{image_set_name}/images'
+    image_dir = f'../data/{image_set_name}/images'
     image_files = os.listdir(image_dir)
     images = [load_image(os.path.join(image_dir, f)) for f in image_files]
     images = np.vstack(images)
@@ -450,12 +450,12 @@ def data_feature_matching(images: Images, **kwargs) -> None:
     import itertools
     image_set_name = kwargs['image_set_name']
     for key, values in images.similar_images.items():
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Started Feature Match for cluster number {key}:")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Started Feature Match for cluster number {key}:")
         for image, matched_image in itertools.combinations(values, 2):
             feature_matching_output = feature_matching(image.descriptors, matched_image.descriptors, **kwargs)
             ransac_output = apply_ransac(feature_matching_output, image.keypoints, matched_image.keypoints, threshold=150, **kwargs)
             images.feature_matches.append(FeatureMatches(image, matched_image, ransac_output))
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"({image.img_id}, {matched_image.img_id}) with {len(ransac_output)} / {len(feature_matching_output)}.")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"({image.img_id}, {matched_image.img_id}) with {len(ransac_output)} / {len(feature_matching_output)}.")
 
 
 @timeit
@@ -528,11 +528,11 @@ def find_next_camera_matrices(
     ) -> tuple[np.ndarray, np.ndarray]:
     image_set_name = kwargs['image_set_name']
     if image_one is not None:
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Using Images {image_one.img_id} and {image_two.img_id} in find_next_camera_matrices")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Using Images {image_one.img_id} and {image_two.img_id} in find_next_camera_matrices")
     local_dict: dict[np.ndarray, np.ndarray] = find_3D_2D_correspondences(image_two, images.feature_matches, global_dict, image_set_name=image_set_name)
     objectPoints = np.array(list(local_dict.keys())).reshape(-1, 3)
     imagePoints = np.array(list(local_dict.values())).reshape(-1, 2)
-    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Found {objectPoints.shape[0]} 3D Points and {imagePoints.shape[0]} Image Points 3D-2D correspondences")
+    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Found {objectPoints.shape[0]} 3D Points and {imagePoints.shape[0]} Image Points 3D-2D correspondences")
     _, rvec, tvec, _ = OpenCV.solvePnPRansac(objectPoints, imagePoints, K_matrix, None)
     R, _ = OpenCV.Rodrigues(rvec)
     return R, tvec
@@ -563,7 +563,7 @@ def compute_points_3D(
                 (image_two.img_id, to_tuple(keypoint_two))
             }
         points_3D[:, point_counter] = point_3D.flatten()
-    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Computed {points_3D.shape[1]} 3D Points for Image pairs {image_one.img_id} and {image_two.img_id}")
+    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Computed {points_3D.shape[1]} 3D Points for Image pairs {image_one.img_id} and {image_two.img_id}")
     return points_3D
 
 
@@ -579,14 +579,14 @@ def find_cluster_feature_matches(
     import itertools
     for image, matched_image in itertools.combinations(values, 2):
         if image.img_id != cluster_reference_image.img_id:
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Breaking itertools loop for {image.img_id} and {matched_image.img_id} in find_cluster_feature_matches\n")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Breaking itertools loop for {image.img_id} and {matched_image.img_id} in find_cluster_feature_matches\n")
             break
         else:
             appended_pair: FeatureMatches = next(
                 fm for fm in images.feature_matches
                 if fm.image_one.img_id == image.img_id and fm.image_two.img_id == matched_image.img_id
             )
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"appended_pair: {appended_pair}")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"appended_pair: {appended_pair}")
             cluster_feature_matches.append(appended_pair)
     return cluster_feature_matches
 
@@ -599,9 +599,9 @@ def generate_points_cloud(images: Images, K_matrix: np.ndarray, **kwargs) -> np.
     camera_matrices: list[np.ndarray] = [(np.eye(3), np.zeros((3, 1)))]
     image_set_name = kwargs['image_set_name']
     for cluster, values in images.similar_images.items():
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"--------------------- Entering Cluster {cluster} ---------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"--------------------- Entering Cluster {cluster} ---------------------")
         cluster_feature_matches:list[FeatureMatches] = find_cluster_feature_matches(images, values, image_set_name=image_set_name)
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"cluster_feature_matches: {cluster_feature_matches}\n")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"cluster_feature_matches: {cluster_feature_matches}\n")
         if cluster == list(images.similar_images.keys())[0]: # First cluster
             P1 = K_matrix @ np.hstack((np.eye(3), np.zeros((3, 1))))
             for feature_match in cluster_feature_matches:
@@ -610,7 +610,7 @@ def generate_points_cloud(images: Images, K_matrix: np.ndarray, **kwargs) -> np.
                 keypoints_one = np.array([image_one.keypoints[m.queryIdx].pt for m in feature_match.matches])
                 keypoints_two = np.array([image_two.keypoints[m.trainIdx].pt for m in feature_match.matches])
                 if feature_match == cluster_feature_matches[0]:  # First Feature Match Pair in the First Cluster, where we use recoverPose
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Using Images {image_one.img_id} and {image_two.img_id} in recoverPose")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Using Images {image_one.img_id} and {image_two.img_id} in recoverPose")
                     R, t = find_initial_camera_matrices(K_matrix, keypoints_one, keypoints_two, image_set_name=image_set_name)
                     P2 = K_matrix @ np.hstack((R, t))
                     camera_matrices.append((R, t))
@@ -620,7 +620,7 @@ def generate_points_cloud(images: Images, K_matrix: np.ndarray, **kwargs) -> np.
                     camera_matrices.append((R, tvec))
                 points_3D = compute_points_3D(P1, P2, image_one, image_two, keypoints_one, keypoints_two, global_dict, image_set_name=image_set_name)
                 points_cloud.append(points_3D)
-                log_to_file(f"data/{image_set_name}/logs/tune.log", f"Global Dict 3D Points Size: {len(global_dict.keys())} \n")
+                log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Global Dict 3D Points Size: {len(global_dict.keys())} \n")
         else: # Next Clusters
             for feature_match in cluster_feature_matches:
                 image_one = feature_match.image_one
@@ -629,8 +629,8 @@ def generate_points_cloud(images: Images, K_matrix: np.ndarray, **kwargs) -> np.
                 keypoints_two = np.array([image_two.keypoints[m.trainIdx].pt for m in feature_match.matches])
                 if feature_match == cluster_feature_matches[0]: # First Iteration of the next Cluster
                 # Computing new P1 for the new cluster
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Entered First Iteration of the cluster {cluster}")
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Using Image {image_one.img_id} as Reference Image in cluster {cluster} to compute P1 for cluster {cluster}")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Entered First Iteration of the cluster {cluster}")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Using Image {image_one.img_id} as Reference Image in cluster {cluster} to compute P1 for cluster {cluster}")
                     P1_R, P1_tvec = find_next_camera_matrices(images, None, image_one, K_matrix, global_dict, image_set_name=image_set_name)
                     P1 = K_matrix @ np.hstack((P1_R, P1_tvec))
                 R, tvec = find_next_camera_matrices(images, image_one, image_two, K_matrix, global_dict, image_set_name=image_set_name)
@@ -638,11 +638,11 @@ def generate_points_cloud(images: Images, K_matrix: np.ndarray, **kwargs) -> np.
                 camera_matrices.append((R, tvec))
                 points_3D = compute_points_3D(P1, P2, image_one, image_two, keypoints_one, keypoints_two, global_dict, image_set_name=image_set_name)
                 points_cloud.append(points_3D)
-                log_to_file(f"data/{image_set_name}/logs/tune.log", f"Global Dict 3D Points Size: {len(global_dict.keys())} \n")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"--------------------- End of cluster {cluster} ---------------------\n\n")
+                log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Global Dict 3D Points Size: {len(global_dict.keys())} \n")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"--------------------- End of cluster {cluster} ---------------------\n\n")
 
     points_cloud = np.hstack(points_cloud).T
-    log_to_file(f"data/{image_set_name}/logs/tune.log", "Done generating points cloud")
+    log_to_file(f"../data/{image_set_name}/logs/tune.log", "Done generating points cloud")
     return points_cloud, camera_matrices
 
 
@@ -676,24 +676,24 @@ def run(image_set_name: str) -> None:  # sourcery skip: low-code-quality
         OPTMIZED = "optimized"
         DEBUG = "debug"
     output_files_3D: list[str] = [
-        f"data/{image_set_name}/output/triangulate/points_cloud.stl",
-        f"data/{image_set_name}/output/triangulate/core_points.stl",
-        f"data/{image_set_name}/output/triangulate/camera_proj.stl",
-        f"data/{image_set_name}/output/triangulate/mesh.stl"
+        f"../data/{image_set_name}/output/triangulate/points_cloud.stl",
+        f"../data/{image_set_name}/output/triangulate/core_points.stl",
+        f"../data/{image_set_name}/output/triangulate/camera_proj.stl",
+        f"../data/{image_set_name}/output/triangulate/mesh.stl"
     ]
     output_files_triangulation: list[str] = [
-        f"data/{image_set_name}/bak/k-matrix.pkl",
-        f"data/{image_set_name}/bak/points-cloud.pkl",
-        f"data/{image_set_name}/bak/core-points.pkl",
-        f"data/{image_set_name}/bak/camera-proj.pkl",
-        f"data/{image_set_name}/bak/hdbscan-model.pkl",
+        f"../data/{image_set_name}/bak/k-matrix.pkl",
+        f"../data/{image_set_name}/bak/points-cloud.pkl",
+        f"../data/{image_set_name}/bak/core-points.pkl",
+        f"../data/{image_set_name}/bak/camera-proj.pkl",
+        f"../data/{image_set_name}/bak/hdbscan-model.pkl",
     ]
-    log_to_file(f"data/{image_set_name}/logs/tune.log", "Welcome ScanMate...")
+    log_to_file(f"../data/{image_set_name}/logs/tune.log", "Welcome ScanMate...")
     mode: enum = Mode.OPTMIZED
     NUM_CLUSTERS: Final[int] = 1
     overwrite: Final[bool] = True
     
-    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Running image_set_name {image_set_name} in {mode} mode...")
+    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Running image_set_name {image_set_name} in {mode} mode...")
     images: Optional[Images] = None
     """ Reloading the last state """
     last_state: str
@@ -707,188 +707,188 @@ def run(image_set_name: str) -> None:  # sourcery skip: low-code-quality
         for output_file in output_files_triangulation
     ):
         last_state = "Triangulation Step"
-    elif os.path.isfile(f"data/{image_set_name}/bak/feature-matching-output.pkl"):
+    elif os.path.isfile(f"../data/{image_set_name}/bak/feature-matching-output.pkl"):
         last_state = "Feature Matching Step"
-    elif os.path.isfile(f"data/{image_set_name}/bak/matched-images.pkl"):
+    elif os.path.isfile(f"../data/{image_set_name}/bak/matched-images.pkl"):
         last_state = "Images Matching Step"
-    elif os.path.isfile(f"data/{image_set_name}/bak/sift-features.pkl"):
+    elif os.path.isfile(f"../data/{image_set_name}/bak/sift-features.pkl"):
         last_state = "SIFT Features Step"
     else:
         last_state = "Images Loading Step"
-    log_to_file(f"data/{image_set_name}/logs/tune.log", f"Last state for {image_set_name} is {last_state}.")
+    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Last state for {image_set_name} is {last_state}.")
     if last_state == "Images Loading Step":
-        if os.path.isfile(f"data/{image_set_name}/bak/images.pkl"):
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/sift-images.pkl] exists")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "Loading images from pickle file...")
-            images: Images = load_images_bak(f"data/{image_set_name}/bak/images.pkl")
+        if os.path.isfile(f"../data/{image_set_name}/bak/images.pkl"):
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File [../data/{image_set_name}/bak/sift-images.pkl] exists")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "Loading images from pickle file...")
+            images: Images = load_images_bak(f"../data/{image_set_name}/bak/images.pkl")
         else:
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/images.pkl] does not exist")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "Loading images from images directory...")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File [../data/{image_set_name}/bak/images.pkl] does not exist")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "Loading images from images directory...")
             images: Images = prepare_images(create_mask=True, image_set_name=image_set_name)
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "Saving images to pickle file...")
-            dump_images_bak(f"data/{image_set_name}/bak/images.pkl", images)
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Images loaded successfully")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "Saving images to pickle file...")
+            dump_images_bak(f"../data/{image_set_name}/bak/images.pkl", images)
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Images loaded successfully")
         last_state = "SIFT Features Step"
     if last_state == "SIFT Features Step":
-        if os.path.isfile(f"data/{image_set_name}/bak/sift-features.pkl"):
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/sift-features.pkl] exists")
+        if os.path.isfile(f"../data/{image_set_name}/bak/sift-features.pkl"):
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File [../data/{image_set_name}/bak/sift-features.pkl] exists")
             if images: 
                 del images
-            images: Images = load_images_bak(f"data/{image_set_name}/bak/sift-features.pkl")
+            images: Images = load_images_bak(f"../data/{image_set_name}/bak/sift-features.pkl")
         else:
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "File [data/{image_set_name}/bak/sift-features.pkl] DO NOT exists")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "Extracting SIFT features...")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "File [../data/{image_set_name}/bak/sift-features.pkl] DO NOT exists")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "Extracting SIFT features...")
             sift = OpenCV.SIFT_create(contrastThreshold=0.01)
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
-            print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+            print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
             compute_keypoints_descriptors(images, sift, image_set_name=image_set_name)
-            print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
-            dump_images_bak(f"data/{image_set_name}/bak/sift-features.pkl", images)
+            print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
+            dump_images_bak(f"../data/{image_set_name}/bak/sift-features.pkl", images)
             if mode == Mode.OPTMIZED:
-                if os.path.exists(f"data/{image_set_name}/bak/images.pkl"):
-                    os.remove(f"data/{image_set_name}/bak/images.pkl")
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/images.pkl removed successfully.")
+                if os.path.exists(f"../data/{image_set_name}/bak/images.pkl"):
+                    os.remove(f"../data/{image_set_name}/bak/images.pkl")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/images.pkl removed successfully.")
                 else:
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/images.pkl does not exist.")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Feature Extraction: SIFT DONE...")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/images.pkl does not exist.")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Feature Extraction: SIFT DONE...")
         last_state = "Images Matching Step"
     if last_state == "Images Matching Step":
-        if os.path.isfile(f"data/{image_set_name}/bak/matched-images.pkl"):
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/matched-images.pkl] exists")
+        if os.path.isfile(f"../data/{image_set_name}/bak/matched-images.pkl"):
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File [../data/{image_set_name}/bak/matched-images.pkl] exists")
             if images: 
                 del images
-            images: Images = load_images_bak(f"data/{image_set_name}/bak/matched-images.pkl")
+            images: Images = load_images_bak(f"../data/{image_set_name}/bak/matched-images.pkl")
         else:
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/matched-images.pkl] DO NOT exists")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "Matching images...")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
-            print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File [../data/{image_set_name}/bak/matched-images.pkl] DO NOT exists")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "Matching images...")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+            print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
             images.num_clusters = NUM_CLUSTERS
             image_matching(images, overwrite=overwrite, image_set_name=image_set_name)
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "image matching done")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "image matching done")
             if not overwrite:
                 images.save_similar_images()
-                log_to_file(f"data/{image_set_name}/logs/tune.log", "saved image clusters")
-                print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
-                log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
-                dump_images_bak(f"data/{image_set_name}/bak/matched-images.pkl", images)
+                log_to_file(f"../data/{image_set_name}/logs/tune.log", "saved image clusters")
+                print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
+                log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
+                dump_images_bak(f"../data/{image_set_name}/bak/matched-images.pkl", images)
             if mode == Mode.OPTMIZED:
-                if os.path.exists(f"data/{image_set_name}/bak/sift-features.pkl"):
-                    os.remove(f"data/{image_set_name}/bak/sift-features.pkl")
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/sift-features.pkl removed successfully.")
+                if os.path.exists(f"../data/{image_set_name}/bak/sift-features.pkl"):
+                    os.remove(f"../data/{image_set_name}/bak/sift-features.pkl")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/sift-features.pkl removed successfully.")
                 else:
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/sift-features.pkl does not exist.")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Done Image Matching Step...")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/sift-features.pkl does not exist.")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Done Image Matching Step...")
         last_state = "Feature Matching Step"
     if last_state == "Feature Matching Step":
-        if os.path.isfile(f"data/{image_set_name}/bak/feature-matching-output.pkl"):
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File [data/{image_set_name}/bak/feature-matching-output.pkl] exists")
+        if os.path.isfile(f"../data/{image_set_name}/bak/feature-matching-output.pkl"):
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File [../data/{image_set_name}/bak/feature-matching-output.pkl] exists")
             if images: 
                 del images
-            images: Images = load_images_bak(f"data/{image_set_name}/bak/feature-matching-output.pkl")
+            images: Images = load_images_bak(f"../data/{image_set_name}/bak/feature-matching-output.pkl")
         else:
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "File [data/{image_set_name}/bak/feature-matching-output.pkl] Do NOT exists")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "Matching features...")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
-            print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "File [../data/{image_set_name}/bak/feature-matching-output.pkl] Do NOT exists")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "Matching features...")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+            print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
             data_feature_matching(images, image_set_name=image_set_name)
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "done feature matching")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "done feature matching")
             images.save_feature_matches()
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "saved feature matching")
-            print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
-            dump_images_bak(f"data/{image_set_name}/bak/feature-matching-output.pkl", images)
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "saved feature matching")
+            print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
+            dump_images_bak(f"../data/{image_set_name}/bak/feature-matching-output.pkl", images)
             if mode == Mode.OPTMIZED:
-                if os.path.exists(f"data/{image_set_name}/bak/matched-images.pkl"):
-                    os.remove(f"data/{image_set_name}/bak/matched-images.pkl")
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/matched-images.pkl removed successfully.")
+                if os.path.exists(f"../data/{image_set_name}/bak/matched-images.pkl"):
+                    os.remove(f"../data/{image_set_name}/bak/matched-images.pkl")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/matched-images.pkl removed successfully.")
                 else:
-                    log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/matched-images.pkl does not exist.")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Done Feature Matching Step...")
+                    log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/matched-images.pkl does not exist.")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Done Feature Matching Step...")
         last_state = "Triangulation Step"
     if last_state == "Triangulation Step":
         # 5. Camera Calibration
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Camera Calibration starts ....")
-        if not os.path.isfile(f"data/{image_set_name}/bak/k-matrix.pkl"):
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/k-matrix.pkl does not exist")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Camera Calibration starts ....")
+        if not os.path.isfile(f"../data/{image_set_name}/bak/k-matrix.pkl"):
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/k-matrix.pkl does not exist")
             K_matrix = compute_k_matrix(images.images[0].path, image_set_name=image_set_name)
-            with open(f"data/{image_set_name}/bak/k-matrix.pkl", 'wb') as f:
+            with open(f"../data/{image_set_name}/bak/k-matrix.pkl", 'wb') as f:
                 pickle.dump(K_matrix, f)
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/k-matrix.pkl saved successfully")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/k-matrix.pkl saved successfully")
         else:
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/k-matrix.pkl exists")
-            with open(f"data/{image_set_name}/bak/k-matrix.pkl", 'rb') as f:
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/k-matrix.pkl exists")
+            with open(f"../data/{image_set_name}/bak/k-matrix.pkl", 'rb') as f:
                 K_matrix = pickle.load(f)
         # 6. Triangulation
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Triangulation starts ....")
-        if os.path.isfile(f"data/{image_set_name}/bak/points-cloud.pkl"):
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/points-cloud.pkl exists")
-            with open(f"data/{image_set_name}/bak/points-cloud.pkl", 'rb') as f:
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Triangulation starts ....")
+        if os.path.isfile(f"../data/{image_set_name}/bak/points-cloud.pkl"):
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/points-cloud.pkl exists")
+            with open(f"../data/{image_set_name}/bak/points-cloud.pkl", 'rb') as f:
                 points_cloud: np.ndarray = pickle.load(f)
-            with open(f"data/{image_set_name}/bak/camera-proj.pkl", 'rb') as f:
+            with open(f"../data/{image_set_name}/bak/camera-proj.pkl", 'rb') as f:
                 camera_matrices: np.ndarray = pickle.load(f)
         else:
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"File data/{image_set_name}/bak/points-cloud.pkl does not exist")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", "Triangulating...")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
-            print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"File ../data/{image_set_name}/bak/points-cloud.pkl does not exist")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", "Triangulating...")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+            print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
             points_cloud, camera_matrices = generate_points_cloud(images, K_matrix, image_set_name=image_set_name)
-            print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
-            log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
-            with open(f"data/{image_set_name}/bak/points-cloud.pkl", 'wb') as f:
+            print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
+            log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images after: {sys.getrefcount(images)}")
+            with open(f"../data/{image_set_name}/bak/points-cloud.pkl", 'wb') as f:
                 pickle.dump(points_cloud, f)
-            with open(f"data/{image_set_name}/bak/camera-proj.pkl", 'wb') as f:
+            with open(f"../data/{image_set_name}/bak/camera-proj.pkl", 'wb') as f:
                 pickle.dump(camera_matrices, f)
         # Cleaning memory before clustering
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Done Point Cloud Step...")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
-        print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
-        print_size(f"data/{image_set_name}/logs/tune.log", points_cloud, "points_cloud")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Done Point Cloud Step...")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Ref count of images before: {sys.getrefcount(images)}")
+        print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
+        print_size(f"../data/{image_set_name}/logs/tune.log", points_cloud, "points_cloud")
         images = None
-        log_to_file(f"data/{image_set_name}/logs/tune.log", gc.collect())
-        print_size(f"data/{image_set_name}/logs/tune.log", images, "images")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Reference count<images>: {sys.getrefcount(images)}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", gc.collect())
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", gc.collect())
+        print_size(f"../data/{image_set_name}/logs/tune.log", images, "images")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Reference count<images>: {sys.getrefcount(images)}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", gc.collect())
         # 7. Points Clustering
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "started clustring....")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "started clustring....")
         import hdbscan
         start_time = time.time()
         hdbscan_model = hdbscan.HDBSCAN().fit(points_cloud)
         end_time = time.time()
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"time taken: {end_time - start_time:,} seconds")
-        with open(f"data/{image_set_name}/bak/hdbscan-model.pkl", 'wb') as f:
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"time taken: {end_time - start_time:,} seconds")
+        with open(f"../data/{image_set_name}/bak/hdbscan-model.pkl", 'wb') as f:
             pickle.dump(hdbscan_model, f)
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "File hdbscan-model.pkl saved successfully...")
-        print_size(f"data/{image_set_name}/logs/tune.log", hdbscan_model, "hdbscan_model")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "File hdbscan-model.pkl saved successfully...")
+        print_size(f"../data/{image_set_name}/logs/tune.log", hdbscan_model, "hdbscan_model")
         # Get the cluster labels for each point
         labels = hdbscan_model.labels_
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Labels Done...")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Labels Done...")
         # Get the indices of the core points (i.e., points that are part of a dense region)
         core_indices = np.where(labels != -1)[0]
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Core Indicies Done...")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Core Indicies Done...")
         # Get the coordinates of the core points
         core_points = points_cloud[core_indices, :]
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Core Points Done...")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Core Points Done...")
         # Get the indices of the outlier points (i.e., points that are not part of any dense region)
         outlier_indices = np.where(labels == -1)[0]
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Outlier Indicies Done...")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Outlier Indicies Done...")
         # Get the coordinates of the outlier points
         outlier_points = points_cloud[outlier_indices, :]
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Outlier Points Done...")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Outlier Points Done...")
         # Log the number of clusters and the number of outlier points
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Number of clusters: {len(np.unique(labels))-1:,}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Number of core points: {len(core_indices):,}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Number of outlier points: {len(outlier_indices):,}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Number of total points: {len(core_indices) + len(outlier_indices):,}")
-        with open(f"data/{image_set_name}/bak/core_points.pkl", 'wb') as f:
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Number of clusters: {len(np.unique(labels))-1:,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Number of core points: {len(core_indices):,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Number of outlier points: {len(outlier_indices):,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Number of total points: {len(core_indices) + len(outlier_indices):,}")
+        with open(f"../data/{image_set_name}/bak/core_points.pkl", 'wb') as f:
             pickle.dump(core_points, f)
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "File core_points.pkl saved successfully...")
-        print_size(f"data/{image_set_name}/logs/tune.log", core_points, "core_points")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "File core_points.pkl saved successfully...")
+        print_size(f"../data/{image_set_name}/logs/tune.log", core_points, "core_points")
         # 8. 3D Reconstruction
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"points_cloud.shape: {points_cloud.shape:,}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Number of cameras detected: {len(camera_matrices):,}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"core_points.shape: {core_points.shape:,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"points_cloud.shape: {points_cloud.shape:,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Number of cameras detected: {len(camera_matrices):,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"core_points.shape: {core_points.shape:,}")
         points_cloud_stl = o3d.geometry.PointCloud()
         points_cloud_stl.points = o3d.utility.Vector3dVector(points_cloud)
         core_points_stl = o3d.geometry.PointCloud()
@@ -902,11 +902,11 @@ def run(image_set_name: str) -> None:  # sourcery skip: low-code-quality
         combined_mesh = o3d.geometry.TriangleMesh()
         for mesh in camera_meshes + camera_lines:
             combined_mesh += mesh
-        point_cloud_file = f"data/{image_set_name}/output/triangulate/points_cloud.ply"
+        point_cloud_file = f"../data/{image_set_name}/output/triangulate/points_cloud.ply"
         o3d.io.write_point_cloud(point_cloud_file, points_cloud_stl)
-        point_cloud_file = f"data/{image_set_name}/output/triangulate/core_points.ply"
+        point_cloud_file = f"../data/{image_set_name}/output/triangulate/core_points.ply"
         o3d.io.write_point_cloud(point_cloud_file, core_points_stl)
-        mesh_file = f"data/{image_set_name}/output/triangulate/camera_proj.ply"
+        mesh_file = f"../data/{image_set_name}/output/triangulate/camera_proj.ply"
         o3d.io.write_triangle_mesh(mesh_file, combined_mesh)
         # 9. Meshing
         pcd = o3d.geometry.PointCloud()
@@ -923,53 +923,53 @@ def run(image_set_name: str) -> None:  # sourcery skip: low-code-quality
         dec_mesh.remove_duplicated_triangles()
         dec_mesh.remove_duplicated_vertices()
         dec_mesh.remove_non_manifold_edges()
-        o3d.io.write_triangle_mesh(f"data/{image_set_name}/output/triangulate/mesh.stl", dec_mesh)
+        o3d.io.write_triangle_mesh(f"../data/{image_set_name}/output/triangulate/mesh.stl", dec_mesh)
         # 10. Further Analysis
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Analysis of X, Y, Z of Points cloud")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"X<{len(points_cloud[:,0]):,}>: {points_cloud[:,0].min():,} to {points_cloud[:,0].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Analysis of X, Y, Z of Points cloud")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"X<{len(points_cloud[:,0]):,}>: {points_cloud[:,0].min():,} to {points_cloud[:,0].max():,}")
         x_counter = Counter(points_cloud[:,0])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(x_counter):,} unique X values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common X: {x_counter.most_common(1)}, Least Two Common X: {x_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Y<{len(points_cloud[:,1]):,}>: {points_cloud[:,1].min():,} to {points_cloud[:,1].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(x_counter):,} unique X values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common X: {x_counter.most_common(1)}, Least Two Common X: {x_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Y<{len(points_cloud[:,1]):,}>: {points_cloud[:,1].min():,} to {points_cloud[:,1].max():,}")
         y_counter = Counter(points_cloud[:,1])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(y_counter):,} unique Y values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common Y: {y_counter.most_common(1)}, Least Two Common Y: {y_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Z<{len(points_cloud[:,2]):,}>: {points_cloud[:,2].min():,} to {points_cloud[:,2].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(y_counter):,} unique Y values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common Y: {y_counter.most_common(1)}, Least Two Common Y: {y_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Z<{len(points_cloud[:,2]):,}>: {points_cloud[:,2].min():,} to {points_cloud[:,2].max():,}")
         z_counter = Counter(points_cloud[:,2])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(z_counter):,} unique Z values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common Z: {z_counter.most_common(1)}, Least Two Common Y: {z_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Analysis of X, Y, Z of Core Points")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"X<{len(core_points[:,0]):,}>: {core_points[:,0].min():,} to {core_points[:,0].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(z_counter):,} unique Z values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common Z: {z_counter.most_common(1)}, Least Two Common Y: {z_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Analysis of X, Y, Z of Core Points")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"X<{len(core_points[:,0]):,}>: {core_points[:,0].min():,} to {core_points[:,0].max():,}")
         x_counter = Counter(core_points[:,0])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(x_counter):,} unique X values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common X: {x_counter.most_common(1)}, Least Two Common X: {x_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Y<{len(core_points[:,1]):,}>: {core_points[:,1].min():,} to {core_points[:,1].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(x_counter):,} unique X values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common X: {x_counter.most_common(1)}, Least Two Common X: {x_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Y<{len(core_points[:,1]):,}>: {core_points[:,1].min():,} to {core_points[:,1].max():,}")
         y_counter = Counter(core_points[:,1])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(y_counter):,} unique Y values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common Y: {y_counter.most_common(1)}, Least Two Common Y: {y_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Z<{len(core_points[:,2]):,}>: {core_points[:,2].min():,} to {core_points[:,2].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(y_counter):,} unique Y values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common Y: {y_counter.most_common(1)}, Least Two Common Y: {y_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Z<{len(core_points[:,2]):,}>: {core_points[:,2].min():,} to {core_points[:,2].max():,}")
         z_counter = Counter(core_points[:,2])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(z_counter):,} unique Z values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common Z: {z_counter.most_common(1)}, Least Two Common Y: {z_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "Analysis of X, Y, Z of Outliers Points")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"X<{len(outlier_points[:,0]):,}>: {outlier_points[:,0].min():,} to {outlier_points[:,0].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(z_counter):,} unique Z values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common Z: {z_counter.most_common(1)}, Least Two Common Y: {z_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "Analysis of X, Y, Z of Outliers Points")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"X<{len(outlier_points[:,0]):,}>: {outlier_points[:,0].min():,} to {outlier_points[:,0].max():,}")
         x_counter = Counter(outlier_points[:,0])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(x_counter):,} unique X values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common X: {x_counter.most_common(1)}, Least Two Common X: {x_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Y<{len(outlier_points[:,1]):,}>: {outlier_points[:,1].min():,} to {outlier_points[:,1].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(x_counter):,} unique X values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common X: {x_counter.most_common(1)}, Least Two Common X: {x_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Y<{len(outlier_points[:,1]):,}>: {outlier_points[:,1].min():,} to {outlier_points[:,1].max():,}")
         y_counter = Counter(outlier_points[:,1])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(y_counter):,} unique Y values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common Y: {y_counter.most_common(1)}, Least Two Common Y: {y_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Z<{len(outlier_points[:,2]):,}>: {outlier_points[:,2].min():,} to {outlier_points[:,2].max():,}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(y_counter):,} unique Y values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common Y: {y_counter.most_common(1)}, Least Two Common Y: {y_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Z<{len(outlier_points[:,2]):,}>: {outlier_points[:,2].min():,} to {outlier_points[:,2].max():,}")
         z_counter = Counter(outlier_points[:,2])
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"We have {len(z_counter):,} unique Z values")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", f"Most Common Z: {z_counter.most_common(1)}, Least Two Common Y: {z_counter.most_common()[:-3:-1]}")
-        log_to_file(f"data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"We have {len(z_counter):,} unique Z values")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", f"Most Common Z: {z_counter.most_common(1)}, Least Two Common Y: {z_counter.most_common()[:-3:-1]}")
+        log_to_file(f"../data/{image_set_name}/logs/tune.log", "-----------------------------------------------------")

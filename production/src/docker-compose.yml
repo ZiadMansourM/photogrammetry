@@ -26,7 +26,7 @@ services:
   app:
     build: .
     volumes:
-      - ./data:/app/data
+      - ../data:/app/data
       - ./configurations/u2net.onnx:/root/.u2net/u2net.onnx
       - ./configurations/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5:/root/.keras/models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
     ports:
