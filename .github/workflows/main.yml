@@ -30,4 +30,4 @@ jobs:
           mkdir -p data
           sudo docker-compose up --build -d
         EOF
-        rm private_key.pem
+        rm ~/.ssh/private_key.pem
