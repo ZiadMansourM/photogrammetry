@@ -15,8 +15,8 @@ services:
       KONG_DECLARATIVE_CONFIG: "/opt/kong/kong.yaml"
     command: "kong start"
     ports:
-      - "3000:8000" # incoming HTTP traffic
-      - "8443:8443" # incoming HTTPS traffic
+      - "80:8000" # incoming HTTP traffic
+      - "443:8443" # incoming HTTPS traffic
       - "8001:8001" # Admin API HTTP
       - "8444:8444" # Admin API HTTPS
     volumes:
@@ -32,23 +32,23 @@ services:
     ports:
       - 8000:8000
 
-  nginx:
-    image: nginx:1.21.3-alpine
-    volumes:
-      - ./configurations/nginx.conf:/etc/nginx/nginx.conf
-      - ./configurations/certs:/etc/letsencrypt
-      - ./configurations/logs:/var/log/nginx
-    ports:
-      - 80:80
-      - 443:443
-    depends_on:
-      - app
+  # nginx:
+  #   image: nginx:1.21.3-alpine
+  #   volumes:
+  #     - ./configurations/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./configurations/certs:/etc/letsencrypt
+  #     - ./configurations/logs:/var/log/nginx
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   depends_on:
+  #     - app
 
-  certbot:
-    image: certbot/certbot
-    command: certonly --webroot --webroot-path=/var/www/html --email ziadmansour.4.9.2000@gmail.com --agree-tos --no-eff-email --staging -d scanmate.sreboy.com
-    volumes:
-      - ./configurations/certs:/etc/letsencrypt
-      - ./configurations/logs:/var/log/letsencrypt
-      - ./configurations/html:/var/www/html
+  # certbot:
+  #   image: certbot/certbot
+  #   command: certonly --webroot --webroot-path=/var/www/html --email ziadmansour.4.9.2000@gmail.com --agree-tos --no-eff-email --staging -d scanmate.sreboy.com
+  #   volumes:
+  #     - ./configurations/certs:/etc/letsencrypt
+  #     - ./configurations/logs:/var/log/letsencrypt
+  #     - ./configurations/html:/var/www/html
       
