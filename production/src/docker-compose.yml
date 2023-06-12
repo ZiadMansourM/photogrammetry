@@ -45,7 +45,7 @@ services:
 
   certbot:
     image: certbot/certbot
-    command: certonly --webroot --webroot-path=/var/www/html --email ziadmansour.4.9.2000@gmail.com --agree-tos --no-eff-email --staging -d scanmate.sreboy.com
+    command: certonly --webroot --webroot-path=/var/www/html --email ziadmansour.4.9.2000@gmail.com --agree-tos --no-eff-email -d scanmate.sreboy.com
     volumes:
       - ./configurations/certs:/etc/letsencrypt
       - ./configurations/logs:/var/log/letsencrypt
