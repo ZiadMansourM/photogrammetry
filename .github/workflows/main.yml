@@ -28,7 +28,7 @@ jobs:
           cd /home/scanmate/src
           sudo docker-compose down
           cd /home/scanmate
-          rm -rf src
+          sudo rm -rf src
         EOF
         scp -i ~/.ssh/private_key.pem -r production/src "$SERVER_USERNAME@$SERVER_IP:/home/scanmate/src"
         ssh -i ~/.ssh/private_key.pem -o StrictHostKeyChecking=no "$SERVER_USERNAME@$SERVER_IP" << EOF
