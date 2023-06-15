@@ -16,7 +16,7 @@ $ generate_point_cloud
 - Recover rest camera poses using solvePNPRansac
 - Apply Triangulation
 $ 3D reconstruction
-- Use PointsCloud to generate 3D Object (.ply) file
+- Use PointsCloud to generate 3D Object (.stl) file
 ```
 
 ## 🏛️ Datasets
