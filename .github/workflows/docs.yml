@@ -22,6 +22,7 @@ jobs:
     - name: Install dependencies and build
       run: |
         cd docs/scanmate
+        npm install
         npm run build
 
     - name: Copy build output
