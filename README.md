@@ -1,3 +1,13 @@
+<div align="center">
+
+<img src="https://github.com/ZiadMansourM/photogrammetry/assets/64917739/d0d8da63-32dd-40ed-ae17-b78bac689a29" alt="Example Image" width="400" height="400">
+
+![code-specs-check](https://github.com/ZiadMansourM/photogrammetry/actions/workflows/type-check.yml/badge.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![python 3.10.4](https://img.shields.io/badge/python-v3.10.4-<COLOR>.svg)](https://shields.io/)
+
+</div>
+
 ## 📝 Pipeline
 ```Console
 *** We have the following 7 steps in our pipeline:
