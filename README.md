@@ -35,7 +35,7 @@ $ 3D reconstruction
 - [X] cottage.
 - [X] fountain.
 
-## Structure
+## 🧐 Production Structure
 ```console
 (venv) ziadh@Ziads-MacBook-Air production % tree 
 .
@@ -71,7 +71,7 @@ $ 3D reconstruction
 10 directories, 18 files
 ```
 
-License
+⚖️ License
 -------
 
 This project is licensed under the terms of the GNU General Public License version 3.0 (GPLv3). See the LICENSE file for details.
