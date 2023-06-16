@@ -3,7 +3,7 @@ name: Build and Deploy Scanmate Docs
 on:
   push:
     paths:
-      - 'docs/scanmate/**'
+      - 'dev-docs/**'
   workflow_dispatch:
 
 jobs:
@@ -21,13 +21,13 @@ jobs:
 
     - name: Install dependencies and build
       run: |
-        cd docs/scanmate
+        cd dev-docs
         npm install
         npm run build
 
     - name: Copy build output
       run: |
-        cp -r docs/scanmate/build/* docs/
+        cp -r dev-docs/build/* docs/
 
     - name: Configure Git user
       run: |
