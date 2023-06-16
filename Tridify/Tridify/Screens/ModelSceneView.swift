@@ -10,7 +10,8 @@ import SceneKit
 
 struct ModelSceneView: View {
     
-    private let path = URL(fileURLWithPath: Bundle.main.path(forResource: "point_cloud", ofType: "stl")!)
+    private let model: String
+    private let path: URL
     private let modelName: String?
     @State private var scene: SCNScene?
     @State private var error: Error?
@@ -41,14 +42,16 @@ struct ModelSceneView: View {
         }
     }
     
-    init(modelName: String?) {
+    init(modelName: String?, model: String) {
         self.modelName = modelName
+        self.model = model
+        self.path = URL(fileURLWithPath: Bundle.main.path(forResource: model, ofType: "stl")!)
     }
 }
 
 struct ModelSceneView_Previews: PreviewProvider {
     static var previews: some View {
         
-        ModelSceneView(modelName: "Perfume")
+        ModelSceneView(modelName: "Perfume", model:"DeathBottle_Bottle")
     }
 }

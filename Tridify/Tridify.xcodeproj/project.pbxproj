@@ -17,13 +17,14 @@
 		AE45CAC42A17F981004D9296 /* ModelSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE45CAC32A17F981004D9296 /* ModelSceneView.swift */; };
 		AE4DD67B2A1285ED00F03AF2 /* ImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */; };
 		AE53BC762A157905002B9977 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE53BC752A157905002B9977 /* GalleryView.swift */; };
-		AE53BC792A157C8F002B9977 /* Model3DView in Frameworks */ = {isa = PBXBuildFile; productRef = AE53BC782A157C8F002B9977 /* Model3DView */; };
 		AE62AAF82A193C7000A4EA05 /* point_cloud.stl in Resources */ = {isa = PBXBuildFile; fileRef = AE62AAF72A193C4400A4EA05 /* point_cloud.stl */; };
 		AE7AF15929F9A7BE00079337 /* TridifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7AF15829F9A7BE00079337 /* TridifyApp.swift */; };
 		AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7AF15A29F9A7BE00079337 /* ContentView.swift */; };
 		AE7AF15D29F9A7BF00079337 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15C29F9A7BF00079337 /* Assets.xcassets */; };
 		AE7AF16029F9A7BF00079337 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */; };
 		AE7F81AF29FA465C005073C8 /* onBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7F81AE29FA465C005073C8 /* onBoardingView.swift */; };
+		AEB9E94F2A355AB6002F8609 /* Cottage.stl in Resources */ = {isa = PBXBuildFile; fileRef = AEB9E94D2A3554DF002F8609 /* Cottage.stl */; };
+		AEB9E9502A355ABB002F8609 /* Hammer.stl in Resources */ = {isa = PBXBuildFile; fileRef = AEB9E94E2A355758002F8609 /* Hammer.stl */; };
 		AEBAC85F2A1A941E00F2CFF6 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAC85E2A1A941E00F2CFF6 /* SendView.swift */; };
 		AED440B529FB94510083FDC1 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED440B429FB94510083FDC1 /* LogoView.swift */; };
 		AEEC4D122A110F5D009F1F09 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEC4D112A110F5D009F1F09 /* CameraService.swift */; };
@@ -50,6 +51,8 @@
 		AE7AF15C29F9A7BF00079337 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		AE7F81AE29FA465C005073C8 /* onBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onBoardingView.swift; sourceTree = "<group>"; };
+		AEB9E94D2A3554DF002F8609 /* Cottage.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cottage.stl; sourceTree = "<group>"; };
+		AEB9E94E2A355758002F8609 /* Hammer.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = Hammer.stl; sourceTree = "<group>"; };
 		AEBAC85E2A1A941E00F2CFF6 /* SendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendView.swift; sourceTree = "<group>"; };
 		AED440B429FB94510083FDC1 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
 		AEEC4D112A110F5D009F1F09 /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
@@ -62,7 +65,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE53BC792A157C8F002B9977 /* Model3DView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,6 +94,8 @@
 				AE7AF15829F9A7BE00079337 /* TridifyApp.swift */,
 				AE62AAF72A193C4400A4EA05 /* point_cloud.stl */,
 				AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */,
+				AEB9E94D2A3554DF002F8609 /* Cottage.stl */,
+				AEB9E94E2A355758002F8609 /* Hammer.stl */,
 				AE45CA8F2A17A5B9004D9296 /* Room1.obj */,
 				AEEC4D0D2A110CC5009F1F09 /* Screens */,
 				AEEC4D0E2A110D32009F1F09 /* UtilitiesViews */,
@@ -171,7 +175,6 @@
 			);
 			name = Tridify;
 			packageProductDependencies = (
-				AE53BC782A157C8F002B9977 /* Model3DView */,
 			);
 			productName = Tridify;
 			productReference = AE7AF15529F9A7BE00079337 /* Tridify.app */;
@@ -218,6 +221,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEB9E9502A355ABB002F8609 /* Hammer.stl in Resources */,
+				AEB9E94F2A355AB6002F8609 /* Cottage.stl in Resources */,
 				AE62AAF82A193C7000A4EA05 /* point_cloud.stl in Resources */,
 				AE45CAC22A17BD93004D9296 /* DeathBottle_Bottle.stl in Resources */,
 				AE7AF16029F9A7BF00079337 /* Preview Assets.xcassets in Resources */,
@@ -464,14 +469,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		AE53BC782A157C8F002B9977 /* Model3DView */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AE53BC772A157C8F002B9977 /* XCRemoteSwiftPackageReference "Model3DView" */;
-			productName = Model3DView;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AE7AF14D29F9A7BE00079337 /* Project object */;
 }

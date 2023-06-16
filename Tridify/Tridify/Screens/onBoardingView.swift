@@ -35,12 +35,12 @@ struct onBoardingView: View {
             
                     VStack {
                         
-                        Text("Tridify")
+                        Text("Scan Mate")
                             .font(.system(size: geo.size.width/8))
                             .fontWeight(.light)
-                            .kerning(15)
+                            .kerning(7)
 
-                        Text("Transform 2D images into 3D models.")
+                        Text("Your 3D scanning companion")
                             .font(.headline)
                             .foregroundColor(isLightMode ? .lightHeadline : .darkHeadline)
                             .fontWeight(.light)
@@ -51,10 +51,10 @@ struct onBoardingView: View {
                     Spacer()
                     
                     VStack {
-                        ButtonOneView(buttonText: "Create Tridify Account", systemName: "arrowtriangle.forward.fill", targetView: {
+                        ButtonOneView(buttonText: "Create Scan Mate Account", systemName: "arrowtriangle.forward.fill", targetView: {
                             Text ("Create an account")
                         })
-                        .frame(width: geo.size.width * 0.75)
+                        .frame(width: geo.size.width * 0.85)
                         
                         AccountStatusView(questionText: "Already have an account?", navigationText: "Log in", targetView: {
                             LoginView()

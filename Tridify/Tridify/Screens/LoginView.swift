@@ -40,7 +40,7 @@ struct LoginView: View {
                 }
                 .scaleEffect(isAnimating ? 1:0)
                 .offset(y: isAnimating ? 0: -40)
-                .animation(.easeOut(duration: 2), value: isAnimating)
+                .animation(.easeOut(duration: 1.5), value: isAnimating)
     
                 VStack {
                     

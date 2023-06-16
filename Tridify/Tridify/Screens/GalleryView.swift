@@ -8,7 +8,8 @@
 import SwiftUI
 struct GalleryView: View {
     
-    @State private var models = [ "Hulk", "Goal", "Nan"]
+    @State private var models = [ "Box", "Perfume", "House", "Hammer"]
+    @State private var names = ["point_cloud", "DeathBottle_Bottle", "Cottage", "Hammer"]
     @State private var isShowing = false
     @Binding private var cameraViewOn: Bool
     @AppStorage("onBoarding") var onBoarding = false
@@ -19,9 +20,9 @@ struct GalleryView: View {
                     LogoView()
                         .frame(width: 50)
                     
-                    Text ("Tridify")
+                    Text ("Scan Mate")
                         .font(.largeTitle)
-                        .kerning(12)
+                        .kerning(4)
                     Spacer()
                     
                     Button {
@@ -49,10 +50,10 @@ struct GalleryView: View {
                     VStack() {
                         ForEach(models.indices, id: \.self){ i in
                             NavigationLink {
-                                ModelSceneView(modelName: models[i])
+                                ModelSceneView(modelName: models[i], model: names[i])
                             } label: {
                                 VStack {
-                                    ModelSceneView(modelName: nil)
+                                    ModelSceneView(modelName: nil, model: names[i])
                                         .frame(height: 200)
                                     HStack {
                                         

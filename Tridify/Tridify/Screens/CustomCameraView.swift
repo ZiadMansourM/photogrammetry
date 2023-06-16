@@ -17,10 +17,11 @@ struct CustomCameraView: View {
     @State private var showSendSheet = false
     @State private var showAlert = false
     @State private var deleteLast = false
-    private let minImagesCount = 10
+    private let minImagesCount = 20
     private var sendFlag: Bool {
         capturedImagesData.count > minImagesCount
     }
+    @State private var imagesSize = 0.0
     
     var body: some View {
         GeometryReader { geo in
@@ -33,7 +34,6 @@ struct CustomCameraView: View {
                                 capturedImagesData.append(data)
                                 if let jpegData = image.jpegData(compressionQuality: 1){
                                     jpegRepresentationData.append(jpegData)
-                                    
                                 }
                                 else {
                                     print ("jpegRepresentation error")
@@ -59,14 +59,13 @@ struct CustomCameraView: View {
                                 
                             }
                             else {
-                                var imagesSize = 0.0
+                                imagesSize = 0.0
                                 for data in jpegRepresentationData {
                                     imagesSize += Double(data.count)
                                 }
                                 imagesSize /= 1024
                                 imagesSize /= 1024
-                                print("Image Size \(imagesSize) MB")
-                                
+                                showSendSheet.toggle()
                             }
                             
                         } label: {
@@ -125,6 +124,9 @@ struct CustomCameraView: View {
         }
         }) {
             ImagesView(capturedData: $capturedImagesData, deleteLast: $deleteLast)
+        }
+        .sheet(isPresented: $showSendSheet){
+            SendView(imageSize: $imagesSize, images: jpegRepresentationData)
         }
         .alert("Take more captures", isPresented: $showAlert) {
             Button ("OK", role: .cancel) {}
