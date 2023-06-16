@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "displaylink",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/timdonnelly/DisplayLink",
+      "state" : {
+        "revision" : "e95f592a176246172324f10eb1bdc92f121d479f",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "gltfscenekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/frzi/GLTFSceneKit",
+      "state" : {
+        "revision" : "a9587ec5c6515ee7d036533fdd909815a9a718ef",
+        "version" : "0.4.1"
+      }
+    },
+    {
+      "identity" : "model3dview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/frzi/Model3DView.git",
+      "state" : {
+        "revision" : "8b3ee58a9a752c11511f9ead61ec42c4d533109a",
+        "version" : "0.1.1"
+      }
+    }
+  ],
+  "version" : 2
+}
