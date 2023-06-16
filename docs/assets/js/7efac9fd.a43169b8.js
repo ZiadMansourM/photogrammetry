@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkscanmate=self.webpackChunkscanmate||[]).push([[98],{4444:e=>{e.exports=JSON.parse('{"title":"Our Mobile App","slug":"/category/our-mobile-app","permalink":"/category/our-mobile-app","navigation":{"previous":{"title":"Trangulation","permalink":"/under-the-hood/trangulation"},"next":{"title":"Introduction","permalink":"/app/introduction"}}}')}}]);
