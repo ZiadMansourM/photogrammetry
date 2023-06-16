@@ -1,0 +1,41 @@
+name: Build and Deploy Scanmate Docs
+
+on:
+  push:
+    paths:
+      - 'docs/scanmate/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install dependencies and build
+      run: |
+        cd docs/scanmate
+        npm ci
+        npm run build
+
+    - name: Copy build output
+      run: |
+        cp -r docs/scanmate/build/* docs/
+
+    - name: Configure Git user
+      run: |
+        git config user.name "ZiadMansourM"
+        git config user.email "ziadmansour.4.9.2000@gmail.com"
+
+    - name: Commit and push changes
+      run: |
+        git add docs/
+        git commit -m "Update built docs"
+        git push
