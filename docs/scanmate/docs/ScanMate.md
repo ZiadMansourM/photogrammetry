@@ -1,5 +1,8 @@
 ---
 sidebar_position: 1
+id: Introduction
+description: 🚁 Helicopter view of Our Graduation Project.
+slug: /
 ---
 
 export const CenterContainer = ({ children }) => (
