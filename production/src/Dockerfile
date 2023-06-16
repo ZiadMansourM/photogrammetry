@@ -17,13 +17,14 @@ RUN apt-get update && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Install dependencies
-RUN pip install tensorflow
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libgl1-mesa-glx && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Install dependencies
+RUN pip install tensorflow
 RUN pip install opencv-python
 RUN pip install scikit-learn
 RUN pip install Pympler

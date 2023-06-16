@@ -17,26 +17,27 @@ services:
     expose:
       - 8000
     volumes:
-      - ./kong-config:/opt/kong
+      - conf/kong-config:/opt/kong
     depends_on:
       - app
 
   app:
-    build: .
+    build: src
+    context: .
     expose:
       - 8000
     volumes:
-      - ../data:/app/data
-      - ../bak/u2net.onnx:/root/.u2net/u2net.onnx
-      - ../bak/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5:/root/.keras/models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
+      - data:/app/data
+      - bak/u2net.onnx:/root/.u2net/u2net.onnx
+      - bak/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5:/root/.keras/models/resnet50_weights_tf_dim_ordering_tf_kernels_notop.h5
 
   nginx:
     image: nginx:1.21.3-alpine
     volumes:
-      - ../conf/nginx.conf:/etc/nginx/nginx.conf
-      - ../conf/certs:/etc/letsencrypt
-      - ../conf/logs:/var/log/nginx
-      - ../conf/html:/var/www/html
+      - conf/nginx.conf:/etc/nginx/nginx.conf
+      - conf/certs:/etc/letsencrypt
+      - conf/logs:/var/log/nginx
+      - conf/html:/var/www/html
     ports:
       - 80:80
       - 443:443
@@ -47,6 +48,6 @@ services:
     image: certbot/certbot
     command: certonly --webroot --webroot-path=/var/www/html --email ziadmansour.4.9.2000@gmail.com --agree-tos --no-eff-email -d scanmate.sreboy.com
     volumes:
-      - ../conf/certs:/etc/letsencrypt
-      - ../conf/logs:/var/log/letsencrypt
-      - ../conf/html:/var/www/html
+      - conf/certs:/etc/letsencrypt
+      - conf/logs:/var/log/letsencrypt
+      - conf/html:/var/www/html

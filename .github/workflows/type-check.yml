@@ -1,0 +1,29 @@
+name: Python Checker
+
+on:
+  push:
+      paths:
+        - 'production/**'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+      
+    - name: Install dependencies
+      run: |
+        pip install flake8
+      
+    - name: Run Python Checker
+      run: |
+        find src -name '*.py' -type f -print0 | xargs -0 -n1 python -m py_compile
+        flake8 src

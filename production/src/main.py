@@ -1,21 +1,28 @@
+import os
+import shutil
+import threading
+from typing import List
+
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
-import shutil
-import os
-from typing import List
-import scanmate 
-import threading
+
+import scanmate
 
 app = FastAPI()
+
 
 @app.get("/")
 async def home():
     return {"message": "Hello World"}
 
+
 @app.post("/{dataset}/images")
 async def upload_images(dataset: str, images: List[UploadFile] = File(...)):
     if os.path.exists(f"data/{dataset}"):
-        raise HTTPException(status_code=409, detail=f"Error: {dataset} already exists.")
+        raise HTTPException(
+            status_code=409,
+            detail=f"Error: {dataset} already exists."
+        )
 
     os.makedirs(f"data/{dataset}")
     os.makedirs(f"data/{dataset}/images")
@@ -27,6 +34,7 @@ async def upload_images(dataset: str, images: List[UploadFile] = File(...)):
     os.makedirs(f"data/{dataset}/output/image-match")
     os.makedirs(f"data/{dataset}/output/triangulate")
     os.makedirs(f"data/{dataset}/output/sift")
+
     # Save the uploaded images to the specified directory
     for img in images:
         with open(f"data/{dataset}/images/{img.filename}", "wb") as buffer:
@@ -36,17 +44,22 @@ async def upload_images(dataset: str, images: List[UploadFile] = File(...)):
     processing_thread.start()
     return {"message": f"Images uploaded successfully under {dataset}"}
 
+
 @app.delete("/{dataset}")
 async def delete_images(dataset: str):
     directory = f"data/{dataset}"
 
     if not os.path.exists(directory):
-        raise HTTPException(status_code=404, detail=f"Error: {dataset} not found")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Error: {dataset} not found"
+        )
 
     # Delete the dataset directory
     shutil.rmtree(directory)
 
     return {"message": f"{dataset} deleted successfully"}
+
 
 @app.get("/{dataset}/object")
 async def get_object(dataset: str):
