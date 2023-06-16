@@ -7,18 +7,57 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE18AB3E29FEDBD600D547A0 /* ButtonOneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE18AB3D29FEDBD600D547A0 /* ButtonOneView.swift */; };
+		AE18AB4029FF071D00D547A0 /* AccountStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE18AB3F29FF071D00D547A0 /* AccountStatusView.swift */; };
+		AE35492929FC63DC00456673 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE35492829FC63DC00456673 /* LoginView.swift */; };
+		AE35492B29FC6B6200456673 /* Color-Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE35492A29FC6B6200456673 /* Color-Theme.swift */; };
+		AE44258D2A061FFA00ADD324 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE44258C2A061FFA00ADD324 /* HomeView.swift */; };
+		AE45CA902A17A5B9004D9296 /* Room1.obj in Resources */ = {isa = PBXBuildFile; fileRef = AE45CA8F2A17A5B9004D9296 /* Room1.obj */; };
+		AE45CAC22A17BD93004D9296 /* DeathBottle_Bottle.stl in Resources */ = {isa = PBXBuildFile; fileRef = AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */; };
+		AE45CAC42A17F981004D9296 /* ModelSceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE45CAC32A17F981004D9296 /* ModelSceneView.swift */; };
+		AE4DD67B2A1285ED00F03AF2 /* ImagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */; };
+		AE53BC762A157905002B9977 /* GalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE53BC752A157905002B9977 /* GalleryView.swift */; };
+		AE62AAF82A193C7000A4EA05 /* point_cloud.stl in Resources */ = {isa = PBXBuildFile; fileRef = AE62AAF72A193C4400A4EA05 /* point_cloud.stl */; };
 		AE7AF15929F9A7BE00079337 /* TridifyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7AF15829F9A7BE00079337 /* TridifyApp.swift */; };
 		AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7AF15A29F9A7BE00079337 /* ContentView.swift */; };
 		AE7AF15D29F9A7BF00079337 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15C29F9A7BF00079337 /* Assets.xcassets */; };
 		AE7AF16029F9A7BF00079337 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */; };
+		AE7F81AF29FA465C005073C8 /* onBoardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7F81AE29FA465C005073C8 /* onBoardingView.swift */; };
+		AEB9E94F2A355AB6002F8609 /* Cottage.stl in Resources */ = {isa = PBXBuildFile; fileRef = AEB9E94D2A3554DF002F8609 /* Cottage.stl */; };
+		AEB9E9502A355ABB002F8609 /* Hammer.stl in Resources */ = {isa = PBXBuildFile; fileRef = AEB9E94E2A355758002F8609 /* Hammer.stl */; };
+		AEBAC85F2A1A941E00F2CFF6 /* SendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEBAC85E2A1A941E00F2CFF6 /* SendView.swift */; };
+		AED440B529FB94510083FDC1 /* LogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED440B429FB94510083FDC1 /* LogoView.swift */; };
+		AEEC4D122A110F5D009F1F09 /* CameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEC4D112A110F5D009F1F09 /* CameraService.swift */; };
+		AEEC4D142A1122F3009F1F09 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEC4D132A1122F3009F1F09 /* CameraView.swift */; };
+		AEEC4D162A112B51009F1F09 /* CustomCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEC4D152A112B51009F1F09 /* CustomCameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AE18AB3D29FEDBD600D547A0 /* ButtonOneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonOneView.swift; sourceTree = "<group>"; };
+		AE18AB3F29FF071D00D547A0 /* AccountStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStatusView.swift; sourceTree = "<group>"; };
+		AE35492829FC63DC00456673 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		AE35492A29FC6B6200456673 /* Color-Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color-Theme.swift"; sourceTree = "<group>"; };
+		AE44258C2A061FFA00ADD324 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		AE45CA8F2A17A5B9004D9296 /* Room1.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Room1.obj; sourceTree = "<group>"; };
+		AE45CABE2A17B870004D9296 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = DeathBottle_Bottle.stl; sourceTree = "<group>"; };
+		AE45CAC32A17F981004D9296 /* ModelSceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSceneView.swift; sourceTree = "<group>"; };
+		AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesView.swift; sourceTree = "<group>"; };
+		AE53BC752A157905002B9977 /* GalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryView.swift; sourceTree = "<group>"; };
+		AE62AAF72A193C4400A4EA05 /* point_cloud.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = point_cloud.stl; sourceTree = "<group>"; };
 		AE7AF15529F9A7BE00079337 /* Tridify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tridify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE7AF15829F9A7BE00079337 /* TridifyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TridifyApp.swift; sourceTree = "<group>"; };
 		AE7AF15A29F9A7BE00079337 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AE7AF15C29F9A7BF00079337 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		AE7F81AE29FA465C005073C8 /* onBoardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = onBoardingView.swift; sourceTree = "<group>"; };
+		AEB9E94D2A3554DF002F8609 /* Cottage.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = Cottage.stl; sourceTree = "<group>"; };
+		AEB9E94E2A355758002F8609 /* Hammer.stl */ = {isa = PBXFileReference; lastKnownFileType = file; path = Hammer.stl; sourceTree = "<group>"; };
+		AEBAC85E2A1A941E00F2CFF6 /* SendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendView.swift; sourceTree = "<group>"; };
+		AED440B429FB94510083FDC1 /* LogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoView.swift; sourceTree = "<group>"; };
+		AEEC4D112A110F5D009F1F09 /* CameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraService.swift; sourceTree = "<group>"; };
+		AEEC4D132A1122F3009F1F09 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		AEEC4D152A112B51009F1F09 /* CustomCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +90,17 @@
 		AE7AF15729F9A7BE00079337 /* Tridify */ = {
 			isa = PBXGroup;
 			children = (
+				AE45CABE2A17B870004D9296 /* Info.plist */,
 				AE7AF15829F9A7BE00079337 /* TridifyApp.swift */,
-				AE7AF15A29F9A7BE00079337 /* ContentView.swift */,
+				AE62AAF72A193C4400A4EA05 /* point_cloud.stl */,
+				AE45CAC12A17BD88004D9296 /* DeathBottle_Bottle.stl */,
+				AEB9E94D2A3554DF002F8609 /* Cottage.stl */,
+				AEB9E94E2A355758002F8609 /* Hammer.stl */,
+				AE45CA8F2A17A5B9004D9296 /* Room1.obj */,
+				AEEC4D0D2A110CC5009F1F09 /* Screens */,
+				AEEC4D0E2A110D32009F1F09 /* UtilitiesViews */,
+				AEEC4D0F2A110D76009F1F09 /* Utilities */,
+				AEEC4D102A110F39009F1F09 /* Camera */,
 				AE7AF15C29F9A7BF00079337 /* Assets.xcassets */,
 				AE7AF15E29F9A7BF00079337 /* Preview Content */,
 			);
@@ -65,6 +113,49 @@
 				AE7AF15F29F9A7BF00079337 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		AEEC4D0D2A110CC5009F1F09 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				AE7AF15A29F9A7BE00079337 /* ContentView.swift */,
+				AE44258C2A061FFA00ADD324 /* HomeView.swift */,
+				AE7F81AE29FA465C005073C8 /* onBoardingView.swift */,
+				AE35492829FC63DC00456673 /* LoginView.swift */,
+				AEEC4D152A112B51009F1F09 /* CustomCameraView.swift */,
+				AE4DD67A2A1285ED00F03AF2 /* ImagesView.swift */,
+				AE53BC752A157905002B9977 /* GalleryView.swift */,
+				AE45CAC32A17F981004D9296 /* ModelSceneView.swift */,
+				AEBAC85E2A1A941E00F2CFF6 /* SendView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		AEEC4D0E2A110D32009F1F09 /* UtilitiesViews */ = {
+			isa = PBXGroup;
+			children = (
+				AE18AB3F29FF071D00D547A0 /* AccountStatusView.swift */,
+				AE18AB3D29FEDBD600D547A0 /* ButtonOneView.swift */,
+				AED440B429FB94510083FDC1 /* LogoView.swift */,
+			);
+			path = UtilitiesViews;
+			sourceTree = "<group>";
+		};
+		AEEC4D0F2A110D76009F1F09 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				AE35492A29FC6B6200456673 /* Color-Theme.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		AEEC4D102A110F39009F1F09 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				AEEC4D112A110F5D009F1F09 /* CameraService.swift */,
+				AEEC4D132A1122F3009F1F09 /* CameraView.swift */,
+			);
+			path = Camera;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +174,8 @@
 			dependencies = (
 			);
 			name = Tridify;
+			packageProductDependencies = (
+			);
 			productName = Tridify;
 			productReference = AE7AF15529F9A7BE00079337 /* Tridify.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +204,9 @@
 				Base,
 			);
 			mainGroup = AE7AF14C29F9A7BE00079337;
+			packageReferences = (
+				AE53BC772A157C8F002B9977 /* XCRemoteSwiftPackageReference "Model3DView" */,
+			);
 			productRefGroup = AE7AF15629F9A7BE00079337 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -125,7 +221,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEB9E9502A355ABB002F8609 /* Hammer.stl in Resources */,
+				AEB9E94F2A355AB6002F8609 /* Cottage.stl in Resources */,
+				AE62AAF82A193C7000A4EA05 /* point_cloud.stl in Resources */,
+				AE45CAC22A17BD93004D9296 /* DeathBottle_Bottle.stl in Resources */,
 				AE7AF16029F9A7BF00079337 /* Preview Assets.xcassets in Resources */,
+				AE45CA902A17A5B9004D9296 /* Room1.obj in Resources */,
 				AE7AF15D29F9A7BF00079337 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -137,7 +238,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AEEC4D122A110F5D009F1F09 /* CameraService.swift in Sources */,
+				AE44258D2A061FFA00ADD324 /* HomeView.swift in Sources */,
+				AED440B529FB94510083FDC1 /* LogoView.swift in Sources */,
+				AE4DD67B2A1285ED00F03AF2 /* ImagesView.swift in Sources */,
+				AEEC4D142A1122F3009F1F09 /* CameraView.swift in Sources */,
+				AEEC4D162A112B51009F1F09 /* CustomCameraView.swift in Sources */,
+				AE18AB3E29FEDBD600D547A0 /* ButtonOneView.swift in Sources */,
+				AE53BC762A157905002B9977 /* GalleryView.swift in Sources */,
+				AE35492B29FC6B6200456673 /* Color-Theme.swift in Sources */,
+				AE45CAC42A17F981004D9296 /* ModelSceneView.swift in Sources */,
+				AE7F81AF29FA465C005073C8 /* onBoardingView.swift in Sources */,
 				AE7AF15B29F9A7BE00079337 /* ContentView.swift in Sources */,
+				AE35492929FC63DC00456673 /* LoginView.swift in Sources */,
+				AE18AB4029FF071D00D547A0 /* AccountStatusView.swift in Sources */,
+				AEBAC85F2A1A941E00F2CFF6 /* SendView.swift in Sources */,
 				AE7AF15929F9A7BE00079337 /* TridifyApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -264,17 +379,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tridify/Preview Content\"";
 				DEVELOPMENT_TEAM = 8W9A8SVCVY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Tridify/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Take photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -293,17 +410,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Tridify/Preview Content\"";
 				DEVELOPMENT_TEAM = 8W9A8SVCVY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Tridify/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Take photos";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -339,6 +458,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AE53BC772A157C8F002B9977 /* XCRemoteSwiftPackageReference "Model3DView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/frzi/Model3DView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = AE7AF14D29F9A7BE00079337 /* Project object */;
 }
