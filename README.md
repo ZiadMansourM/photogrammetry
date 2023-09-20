@@ -2,7 +2,8 @@
 
 <img src="https://github.com/ZiadMansourM/photogrammetry/assets/64917739/b8d80fd8-e261-4ed5-9afa-f0cdf6d79022" alt="ScanMate" width="400" height="400">
 
-![code-specs-check](https://github.com/ZiadMansourM/photogrammetry/actions/workflows/type-check.yml/badge.svg)
+![Code Convention](https://github.com/ZiadMansourM/photogrammetry/actions/workflows/type-check.yml/badge.svg)
+[![Build and Deploy Scanmate Docs](https://github.com/ZiadMansourM/photogrammetry/actions/workflows/docs.yml/badge.svg?branch=master)](https://github.com/ZiadMansourM/photogrammetry/actions/workflows/docs.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![python 3.10.4](https://img.shields.io/badge/python-v3.10.4-<COLOR>.svg)](https://shields.io/)
 
