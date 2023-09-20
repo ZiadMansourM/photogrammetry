@@ -22,7 +22,7 @@ services:
       - app
 
   app:
-    build: src
+    build: scanmate
     context: .
     expose:
       - 8000
