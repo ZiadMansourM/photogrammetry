@@ -9,7 +9,7 @@
 
 </div>
 
-## 📝 Pipeline
+## 📝 Pipeline - [docs](https://docs.scanmate.sreboy.com/) - [videos](https://www.youtube.com/playlist?list=PLtRAgw3FCYeBXUeBIDOmbzzEEryIvtJo3)
 ```Console
 *** We have the following 7 steps in our pipeline:
 $ prepare_images
