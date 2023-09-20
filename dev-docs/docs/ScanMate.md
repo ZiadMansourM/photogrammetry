@@ -42,10 +42,10 @@ export const Table = ({ headers, rows }) => (
       ['Yousif adel', '-', '-'],
     ]}
   />
-  <p>Developed by four talented young men as their graduation project.</p>
+  <p>ScanMate: Implementation of Close Range Photogrammetry using Classical Image Processing Techniques</p>
 </CenterContainer>
 
-## 📝 Pipeline
+## 📝 Pipeline - [docs][docs] - [videos][videos]
 ```Console
 *** We have the following 7 steps in our pipeline:
 $ prepare_images
@@ -67,12 +67,16 @@ $ 3D reconstruction
 ```
 
 ## 🏛️ Datasets
-- [ ] snow-man.
-- [X] hammer.
-- [X] cottage.
-- [X] fountain.
 
-## 🧐 Production Structure
+| Status | Dataset Link | Description |
+|--------|--------------|-------------|
+| ❌  | [Gingerbread Man](https://www.capturingreality.com/free-datasets) | 3D model of a gingerbread cookie. Created in RealityCapture from 158 images. |
+| ✅  | [Hammer](https://www.capturingreality.com/free-datasets) | Hammer dataset with size of 750 MB. |
+| ✅  | [Small Cottage](https://www.capturingreality.com/free-datasets) | Objects Scanned from all sides using Masks. |
+| ✅  | [Fountain](https://sketchfab.com/3d-models/fountain-dataset-bdcf73513f404370a80cd3d8d0871fa8) | 3D reconstruction images from the popular Strecha dataset. |
+
+
+## 🧐 Production Folder Structure
 ```console
 (venv) ziadh@Ziads-MacBook-Air production % tree 
 .
@@ -111,3 +115,7 @@ $ 3D reconstruction
 ## ⚖️ License
 
 This project is licensed under the terms of the GNU General Public License version 3.0 (GPLv3). See the LICENSE file for details.
+
+
+[docs]: https://docs.scanmate.sreboy.com/
+[videos]: https://www.youtube.com/playlist?list=PLtRAgw3FCYeBXUeBIDOmbzzEEryIvtJo3
